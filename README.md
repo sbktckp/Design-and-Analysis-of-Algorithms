@@ -21,6 +21,7 @@ One folder per lab day, named after the topic it covers. Inside each: the progra
 | Day | Topic |
 |-----|-------|
 | 1 | Revision of Data Structures |
+| 2 | Fundamentals of Algorithmic Problem Solving |
 
 ### RUNNING IT
 
@@ -32,7 +33,7 @@ make
 ./bin/1.1_second_smallest_largest
 ```
 
-`make` compiles every `.c` in the folder into `bin/`. Run the binaries from inside the day folder so the relative `data/` paths resolve. Locally it's the same thing, as long as you have gcc.
+`make` compiles every `.c` in the folder into `bin/`. Run the binaries from inside the day folder so the relative `data/` paths resolve. Some programs take command line arguments, which the day README lists. Locally it's the same thing, as long as you have gcc.
 
 ### WHY IT'S PUBLIC
 

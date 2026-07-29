@@ -2,3 +2,4 @@ bin/
 *.o
 *.out
 *.exe
+data/out*.dat
