@@ -16,7 +16,23 @@ I'll add each week's work as it happens: the problem, the approach, and whatever
 
 ### HOW IT'S ORGANIZED
 
-Nothing's here yet beyond this README. Once the first lab lands, the plan is to keep one folder per week or topic, so anyone (including future me) can find a specific algorithm without digging through unrelated code.
+One folder per lab day, named after the topic it covers. Inside each: the programs numbered exactly as the lab sheet numbers them (1.1, 1.2, ...), a `data/` folder for any input the question says to read from a disc file, a `Makefile`, and a short README with the question list and complexities.
+
+| Day | Topic |
+|-----|-------|
+| 1 | Revision of Data Structures |
+
+### RUNNING IT
+
+Everything is plain C, no dependencies. Open the repo in a GitHub Codespace (Code -> Codespaces -> Create codespace on main) and the container comes with `gcc` and `make` ready. Then:
+
+```bash
+cd "Day 1 - Revision of Data Structures"
+make
+./bin/1.1_second_smallest_largest
+```
+
+`make` compiles every `.c` in the folder into `bin/`. Run the binaries from inside the day folder so the relative `data/` paths resolve. Locally it's the same thing, as long as you have gcc.
 
 ### WHY IT'S PUBLIC
 
