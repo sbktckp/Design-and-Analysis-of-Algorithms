@@ -15,6 +15,26 @@ This is where I'm keeping the code from my Design and Analysis of Algorithms lab
 
 Every program is plain C with no dependencies, compiled with `-std=c17 -O2 -Wall -Wextra -Wpedantic` and clean under all of them. Where the sheet gives sample input and expected output, the program reproduces it exactly.
 
+### QUICK START
+
+Open the repo in a GitHub Codespace: green **Code** button, then **Codespaces**, then **Create codespace on main**. The container installs `gcc` and `make` and builds every program before handing you the terminal. Then just run one:
+
+```bash
+./run              # list every program in the repo
+./run 6.1          # build and run Prim's MST
+./run 3.1          # the merge sort menu
+```
+
+`./run` figures out which folder the program lives in and starts it there, so the relative `data/` paths always resolve no matter where you are in the tree. Arguments after the number go to the program:
+
+```bash
+./run 2.1 150 data/inDec.dat data/outBin.dat
+```
+
+To rebuild everything by hand, `make` at the top level walks every folder. `make clean` removes all the binaries.
+
+Nothing here is machine specific: no absolute paths, no `conio.h`, no Turbo C calls, standard C17 only. It behaves the same in a Codespace, in WSL, on Linux, or on macOS.
+
 ### HOW IT'S ORGANIZED
 
 One folder per lab day, plus a folder per assignment, named after the topic it covers. Inside each folder:
@@ -47,9 +67,22 @@ Day 2 has no question 2.2. The lab sheet skips from 2.1 to 2.3.
 |-----|-------|----------|
 | [1](Assignment%201%20-%20File%20Handling) | File Handling | compare two files, convert a file to upper case, split numbers into odd and even files |
 
-### RUNNING IT
+### RUNNING IT WITHOUT CODESPACES
 
-Open the repo in a GitHub Codespace (Code, then Codespaces, then Create codespace on main) and the container arrives with `gcc` and `make` ready. Locally it's the same, as long as you have gcc. Then pick a folder and build it:
+Any machine with `gcc` and `make` works. On Windows the least painful route is WSL:
+
+```bash
+wsl --install -d Ubuntu
+sudo apt install -y build-essential git
+git clone https://github.com/sbktckp/Design-and-Analysis-of-Algorithms.git
+cd Design-and-Analysis-of-Algorithms
+make
+./run 6.1
+```
+
+If `./run` reports a permission error, the executable bit did not survive the clone. Either `chmod +x run` once, or call it as `bash run 6.1`.
+
+You can also build a single folder on its own:
 
 ```bash
 cd "Day 6 - Minimum Cost Spanning Tree"
@@ -57,14 +90,7 @@ make
 ./bin/6.1_prim_mst
 ```
 
-`make` compiles every `.c` in that folder into `bin/`. Build just one with `make bin/6.1_prim_mst`, and clear the binaries with `make clean`.
-
-Two things to remember:
-
-- run the binaries from inside the folder, so the relative `data/` paths resolve
-- some programs take command line arguments, which that folder's README lists
-
-Built binaries and generated output files are gitignored, so running things never dirties the repo.
+Built binaries and generated output files are gitignored, so running things never dirties the repo. Line endings are pinned to LF by `.gitattributes`, which keeps the Makefiles and the `run` script working even when the repo is cloned on Windows.
 
 ### WHY IT'S PUBLIC
 
