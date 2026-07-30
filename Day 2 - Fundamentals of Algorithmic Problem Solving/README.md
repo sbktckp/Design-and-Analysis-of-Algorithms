@@ -5,19 +5,38 @@ results to a separate disc file, as the lab sheet asks.
 
 | No. | Program | File | Arguments |
 |-----|---------|------|-----------|
-| 2.1 | Decimal to Binary | `2.1_decimal_to_binary.c` | `<n> <source> <destination>` |
-| 2.3 | GCD of Pairs | `2.3_gcd_pairs.c` | `<source> <destination>` |
+| 2.1 | Decimal to Binary | `2.1_decimal_to_binary.c` | `[<n> <source> <destination>]` |
+| 2.3 | GCD of Pairs | `2.3_gcd_pairs.c` | `[<source> <destination>]` |
+
+2.2 is not in the lab manual. It jumps from 2.1 to 2.3.
 
 ## Run
+
+The arguments are optional. With none, both programs use the files in `data/`:
+
+```bash
+./run 2.1
+./run 2.3
+./run compact/2.1
+./run compact/2.3
+```
+
+With arguments, exactly as the sheet writes it:
 
 ```bash
 ./run 2.1 150 data/inDec.dat data/outBin.dat
 ./run 2.3 data/inGcd.dat data/outGcd.dat
-
-./run compact/2.1 3 ../data/inDec.dat ../data/outBin.dat
 ```
 
-Or the way the sheet writes it:
+For the compact versions the paths are relative to the `compact/` folder, so
+they need `../data/`:
+
+```bash
+./run compact/2.1 3 ../data/inDec.dat ../data/outBin.dat
+./run compact/2.3 ../data/inGcd.dat ../data/outGcd.dat
+```
+
+Or by hand, the way the sheet writes it:
 
 ```bash
 cd "Day 2 - Fundamentals of Algorithmic Problem Solving"
@@ -25,7 +44,8 @@ gcc 2.1_decimal_to_binary.c -o lab2q1
 ./lab2q1 150 data/inDec.dat data/outBin.dat
 ```
 
-2.2 is not in the lab manual. It jumps from 2.1 to 2.3.
+If you get `No such file or directory`, the program was started from the wrong
+folder. `./run` takes care of that for you.
 
 ## How each program works
 
@@ -37,8 +57,18 @@ words including the program name, and `argv` holds them as strings. So for
 the string `"150"`, `argv[2]` and `argv[3]` are the two file names. Since
 `argv[1]` is text and not a number, `strtol` or `atoi` converts it.
 
-Checking `argc != 4` before touching `argv` is what stops the program crashing
-when someone forgets an argument.
+Two habits here are not decoration, they are the difference between a program
+that explains itself and one that dies with a segmentation fault:
+
+- **check `argc` before touching `argv`.** Reading `argv[1]` when nothing was
+  typed hands `atoi` a null pointer, and the crash happens before any of your
+  code runs.
+- **check what `fopen` returned.** A failed open gives back `NULL`, and passing
+  `NULL` to `fscanf` crashes. A wrong path is the most likely thing to go wrong
+  with these two programs, so it deserves a message rather than a signal 11.
+
+Both programs here fall back to the files in `data/` when run bare, so there is
+always a working way to start them.
 
 ### 2.1 Decimal to binary by recursion
 
