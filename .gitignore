@@ -3,3 +3,7 @@ bin/
 *.out
 *.exe
 **/data/out*.dat
+**/data/upper.txt
+**/data/DATA.dat
+**/data/ODD.dat
+**/data/EVEN.dat

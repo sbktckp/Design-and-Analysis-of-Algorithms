@@ -1,0 +1,2 @@
+Hello World from the DAA lab.
+File handling in c is mostly getc and putc.
