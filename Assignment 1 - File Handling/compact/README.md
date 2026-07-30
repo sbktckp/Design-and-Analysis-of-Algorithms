@@ -1,14 +1,13 @@
 # Compact versions, Assignment 1
 
 ```bash
-./run "assignment 1/compact" is not needed, just use the numbers:
 ./run compact/1.1
 ./run compact/1.2
 ./run compact/1.3
 ```
 
-If `./run compact/1.1` reports two matches, Day 1 has a compact 1.1 as well.
-Name this folder instead:
+Day 1 also has a compact 1.1 to 1.4, so if `./run` reports two matches it will
+print the exact commands to pick one. You can always build in place instead:
 
 ```bash
 cd "Assignment 1 - File Handling/compact"
