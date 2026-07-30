@@ -5,7 +5,8 @@
  * stopping case. Each step replaces the pair with a smaller pair, so it ends
  * quickly, in about log of the smaller number steps.
  *
- * Compile and run
+ * Run it with no arguments and it uses the two files in ../data/. Or give it
+ * both names, the way the sheet writes it:
  *   gcc 2.3_gcd_pairs.c -o lab2q2
  *   ./lab2q2 ../data/inGcd.dat ../data/outGcd.dat
  *
@@ -22,12 +23,15 @@
 #include <stdio.h>
 int gcd(int a, int b) { return b == 0 ? a : gcd(b, a % b); }
 int main(int argc, char *argv[]) {
-    FILE *in = fopen(argv[1], "r"), *out = fopen(argv[2], "w");
+    char *sf = argc > 1 ? argv[1] : "../data/inGcd.dat";
+    char *df = argc > 2 ? argv[2] : "../data/outGcd.dat";
     int a, b, c;
+    FILE *in = fopen(sf, "r"), *out = fopen(df, "w");
+    if (!in || !out) { printf("Cannot open %s or %s\n", sf, df); return 1; }
     while (fscanf(in, "%d %d", &a, &b) == 2)
         fprintf(out, "The GCD of %d and %d is %d\n", a, b, gcd(a, b));
     fclose(in); fclose(out);
-    out = fopen(argv[2], "r");
+    out = fopen(df, "r");
     while ((c = fgetc(out)) != EOF) putchar(c);
     return 0;
 }

@@ -7,7 +7,11 @@
  *      output file.
  *
  * Note: n, source file name and destination file name come from the command
- *       line arguments.
+ *       line arguments. Run with no arguments and it falls back to n = 15 and
+ *       the two files in data/, so it always does something useful:
+ *
+ *          ./bin/2.1_decimal_to_binary
+ *          ./bin/2.1_decimal_to_binary 150 data/inDec.dat data/outBin.dat
  *
  * Method: write_binary() recurses on value >> 1 before printing the current
  *         bit, so the most significant bit is emitted first and no reversal
@@ -29,29 +33,36 @@ static void write_binary(unsigned value, int bits, FILE *out)
 
 int main(int argc, char *argv[])
 {
+    const char *src_path = "data/inDec.dat";
+    const char *dst_path = "data/outBin.dat";
     FILE *src, *dst;
-    long n, i, value;
+    long n = 15, i, value;
     char line[256];
 
-    if (argc != 4) {
-        fprintf(stderr, "Usage: %s <n> <source file> <destination file>\n", argv[0]);
+    if (argc == 4) {
+        n = strtol(argv[1], NULL, 10);
+        src_path = argv[2];
+        dst_path = argv[3];
+    } else if (argc != 1) {
+        fprintf(stderr, "Usage: %s [<n> <source file> <destination file>]\n", argv[0]);
+        fprintf(stderr, "With no arguments it reads %s and writes %s\n", src_path, dst_path);
         return 1;
     }
 
-    n = strtol(argv[1], NULL, 10);
     if (n <= 0) {
         fprintf(stderr, "n must be a positive integer\n");
         return 1;
     }
 
-    src = fopen(argv[2], "r");
+    src = fopen(src_path, "r");
     if (src == NULL) {
-        perror(argv[2]);
+        perror(src_path);
+        fprintf(stderr, "Run this from inside the day folder, or use ./run 2.1\n");
         return 1;
     }
-    dst = fopen(argv[3], "w");
+    dst = fopen(dst_path, "w");
     if (dst == NULL) {
-        perror(argv[3]);
+        perror(dst_path);
         fclose(src);
         return 1;
     }
@@ -70,12 +81,12 @@ int main(int argc, char *argv[])
     fclose(src);
     fclose(dst);
 
-    dst = fopen(argv[3], "r");
+    dst = fopen(dst_path, "r");
     if (dst == NULL) {
-        perror(argv[3]);
+        perror(dst_path);
         return 1;
     }
-    printf("Contents of the output disc file \"%s\":\n", argv[3]);
+    printf("Contents of the output disc file \"%s\":\n", dst_path);
     while (fgets(line, sizeof line, dst) != NULL)
         fputs(line, stdout);
     fclose(dst);
