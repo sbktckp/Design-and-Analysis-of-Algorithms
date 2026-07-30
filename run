@@ -2,10 +2,12 @@
 #
 # Build and run any program by its number, from anywhere in the repo.
 #
-#   ./run              list every program
-#   ./run 6.1          build and run 6.1_prim_mst inside its own folder
-#   ./run 2.1 150 data/inDec.dat data/outBin.dat
-#                      anything after the number is passed to the program
+#   ./run                       list every program
+#   ./run 6.1                   build and run 6.1_prim_mst inside its own folder
+#   ./run 2.1 150 in.dat out.dat
+#                               anything after the number goes to the program
+#   ./run assignment/1.1        when a number exists in more than one folder,
+#                               put a piece of the folder name before a slash
 #
 # The script changes into the program's own folder before running it, because
 # the programs open their input files by relative path.
@@ -15,28 +17,53 @@
 set -euo pipefail
 cd "$(dirname "$0")"
 
-if [ "$#" -eq 0 ]; then
-	printf 'Programs in this repo:\n\n'
+list_all() {
 	find . -mindepth 2 -maxdepth 2 -name '*.c' | sort | while IFS= read -r path; do
 		folder=$(dirname "$path")
 		printf '  %-34s %s\n' "$(basename "$path" .c)" "${folder#./}"
 	done
+}
+
+if [ "$#" -eq 0 ]; then
+	printf 'Programs in this repo:\n\n'
+	list_all
 	printf '\nRun one with:  ./run <number>   for example  ./run 6.1\n'
 	exit 0
 fi
 
-number="$1"
+query="$1"
 shift
 
+# Split an optional folder hint off the front: assignment/1.1
+if [ "${query}" != "${query#*/}" ]; then
+	hint=${query%%/*}
+	number=${query##*/}
+else
+	hint=""
+	number=$query
+fi
+
 matches=$(find . -mindepth 2 -maxdepth 2 -name "${number}_*.c" | sort)
+if [ -n "$hint" ]; then
+	matches=$(printf '%s\n' "$matches" | grep -i -- "$hint" || true)
+fi
 count=$(printf '%s\n' "$matches" | grep -c . || true)
 
 if [ "$count" -eq 0 ]; then
-	printf 'No program numbered %s. Run ./run with no arguments to see the list.\n' "$number" >&2
+	printf 'Nothing matches %s. Run ./run with no arguments to see the list.\n' "$query" >&2
 	exit 1
 fi
+
 if [ "$count" -gt 1 ]; then
-	printf 'More than one program matches %s:\n%s\n' "$number" "$matches" >&2
+	printf 'The number %s exists in more than one folder:\n\n' "$number" >&2
+	printf '%s\n' "$matches" | while IFS= read -r path; do
+		printf '  %s\n' "$(dirname "${path#./}")" >&2
+	done
+	printf '\nAdd a piece of the folder name, for example:\n' >&2
+	printf '%s\n' "$matches" | while IFS= read -r path; do
+		folder=$(dirname "${path#./}")
+		printf '  ./run %s/%s\n' "$(printf '%s' "$folder" | cut -d' ' -f1 | tr 'A-Z' 'a-z')" "$number" >&2
+	done
 	exit 1
 fi
 
