@@ -13,18 +13,18 @@
 
 This is where I'm keeping the code from my Design and Analysis of Algorithms lab, week by week. It's a college course repo, not a polished library, so expect it to look like a semester in progress rather than a finished project.
 
-Every program is plain C with no dependencies, compiled with `-std=c17 -O2 -Wall -Wextra -Wpedantic` and clean under all of them. Where the lab sheet gives sample input and expected output, the program reproduces it exactly.
+Every program is plain C with no dependencies, compiled with `-std=c17 -O2 -Wall -Wextra -Wpedantic` and clean under all of them. Where the sheet gives sample input and expected output, the program reproduces it exactly.
 
 ### HOW IT'S ORGANIZED
 
-One folder per lab day, named after the topic it covers. Inside each folder:
+One folder per lab day, plus a folder per assignment, named after the topic it covers. Inside each folder:
 
-- programs numbered exactly as the lab sheet numbers them, `1.1`, `3.2`, `10.3` and so on, with a short name after the number
+- programs numbered exactly as the sheet numbers them, `1.1`, `3.2`, `10.3` and so on, with a short name after the number
 - a `data/` folder for anything the question says to read from a disc file
 - a `Makefile` that builds every program in that folder into `bin/`
 - a `README.md` with the question list, how to run it, implementation notes and complexities
 
-### THE DAYS
+### THE LAB DAYS
 
 | Day | Topic | Programs |
 |-----|-------|----------|
@@ -41,9 +41,15 @@ One folder per lab day, named after the topic it covers. Inside each folder:
 
 Day 2 has no question 2.2. The lab sheet skips from 2.1 to 2.3.
 
+### THE ASSIGNMENTS
+
+| No. | Topic | Programs |
+|-----|-------|----------|
+| [1](Assignment%201%20-%20File%20Handling) | File Handling | compare two files, convert a file to upper case, split numbers into odd and even files |
+
 ### RUNNING IT
 
-Open the repo in a GitHub Codespace (Code, then Codespaces, then Create codespace on main) and the container arrives with `gcc` and `make` ready. Locally it's the same, as long as you have gcc. Then pick a day and build it:
+Open the repo in a GitHub Codespace (Code, then Codespaces, then Create codespace on main) and the container arrives with `gcc` and `make` ready. Locally it's the same, as long as you have gcc. Then pick a folder and build it:
 
 ```bash
 cd "Day 6 - Minimum Cost Spanning Tree"
@@ -55,8 +61,8 @@ make
 
 Two things to remember:
 
-- run the binaries from inside the day folder, so the relative `data/` paths resolve
-- some programs take command line arguments, which that day's README lists
+- run the binaries from inside the folder, so the relative `data/` paths resolve
+- some programs take command line arguments, which that folder's README lists
 
 Built binaries and generated output files are gitignored, so running things never dirties the repo.
 
