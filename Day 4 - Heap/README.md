@@ -6,6 +6,14 @@
 
 ## Run
 
+From the repo root:
+
+```bash
+./run 4.1
+```
+
+Or build this folder on its own:
+
 ```bash
 cd "Day 4 - Heap"
 make

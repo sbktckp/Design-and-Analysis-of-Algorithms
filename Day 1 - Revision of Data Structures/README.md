@@ -9,13 +9,21 @@
 
 ## Run
 
+From the repo root, `./run` handles the folder for you:
+
+```bash
+./run 1.1
+./run 1.2
+./run 1.3
+./run 1.4
+```
+
+Or build this folder on its own:
+
 ```bash
 cd "Day 1 - Revision of Data Structures"
 make            # builds every .c into bin/
 ./bin/1.1_second_smallest_largest
-./bin/1.2_prefix_sum
-./bin/1.3_duplicate_elements
-./bin/1.4_rotate_right
 ```
 
 Run the binaries from inside this folder so the relative `data/` paths resolve.

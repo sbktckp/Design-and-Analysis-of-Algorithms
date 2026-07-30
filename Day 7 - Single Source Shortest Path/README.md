@@ -6,10 +6,18 @@
 
 ## Run
 
+From the repo root:
+
+```bash
+./run 7.1      # 5 vertices, source vertex 1
+```
+
+Or build this folder on its own:
+
 ```bash
 cd "Day 7 - Single Source Shortest Path"
 make
-./bin/7.1_dijkstra_shortest_path   # 5 vertices, source vertex 1
+./bin/7.1_dijkstra_shortest_path
 ```
 
 Output for the supplied graph, matching the sheet:

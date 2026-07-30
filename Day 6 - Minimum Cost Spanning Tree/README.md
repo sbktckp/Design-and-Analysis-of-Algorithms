@@ -10,11 +10,20 @@ it in the two different formats the two questions specify.
 
 ## Run
 
+From the repo root:
+
+```bash
+./run 6.1      # asks for 9 vertices, starting vertex 1
+./run 6.2      # reads n, m and the edges from the file
+```
+
+Or build this folder on its own:
+
 ```bash
 cd "Day 6 - Minimum Cost Spanning Tree"
 make
-./bin/6.1_prim_mst      # asks for 9 vertices, starting vertex 1
-./bin/6.2_kruskal_mst   # reads n, m and the edges from the file
+./bin/6.1_prim_mst
+./bin/6.2_kruskal_mst
 ```
 
 Both report a total cost of 37, which is the answer the sheet gives.

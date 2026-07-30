@@ -9,6 +9,15 @@ Both programs read from the keyboard.
 
 ## Run
 
+From the repo root:
+
+```bash
+./run 8.1
+./run 8.2
+```
+
+Or build this folder on its own:
+
 ```bash
 cd "Day 8 - Dynamic Programming"
 make

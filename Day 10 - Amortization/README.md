@@ -10,12 +10,22 @@ All three programs are self contained and need no data files.
 
 ## Run
 
+From the repo root:
+
+```bash
+./run 10.1     # enter 300
+./run 10.2     # option 4 runs the self test
+./run 10.3     # option 4 runs the sample sequence
+```
+
+Or build this folder on its own:
+
 ```bash
 cd "Day 10 - Amortization"
 make
-./bin/10.1_randomized_quicksort    # enter 300
-./bin/10.2_fibonacci_fitstring     # option 4 runs the self test
-./bin/10.3_binary_counter_reset    # option 4 runs the sample sequence
+./bin/10.1_randomized_quicksort
+./bin/10.2_fibonacci_fitstring
+./bin/10.3_binary_counter_reset
 ```
 
 ## Notes

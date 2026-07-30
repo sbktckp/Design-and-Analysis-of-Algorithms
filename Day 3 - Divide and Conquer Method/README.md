@@ -14,6 +14,15 @@ shuffle of the same values.
 
 ## Run
 
+From the repo root:
+
+```bash
+./run 3.1
+./run 3.2
+```
+
+Or build this folder on its own:
+
 ```bash
 cd "Day 3 - Divide and Conquer Method"
 make

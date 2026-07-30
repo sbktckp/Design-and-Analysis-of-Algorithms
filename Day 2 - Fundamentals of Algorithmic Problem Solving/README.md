@@ -10,10 +10,18 @@ results to a separate disc file, as the lab sheet asks.
 
 ## Run
 
+From the repo root, arguments after the number pass straight through:
+
+```bash
+./run 2.1 150 data/inDec.dat data/outBin.dat
+./run 2.3 data/inGcd.dat data/outGcd.dat
+```
+
+Or build this folder on its own:
+
 ```bash
 cd "Day 2 - Fundamentals of Algorithmic Problem Solving"
 make
-
 ./bin/2.1_decimal_to_binary 150 data/inDec.dat data/outBin.dat
 ./bin/2.3_gcd_pairs data/inGcd.dat data/outGcd.dat
 ```

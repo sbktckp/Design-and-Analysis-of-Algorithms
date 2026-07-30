@@ -9,6 +9,15 @@ Both programs read from the keyboard, so nothing here needs a data file.
 
 ## Run
 
+From the repo root:
+
+```bash
+./run 5.1
+./run 5.2
+```
+
+Or build this folder on its own:
+
 ```bash
 cd "Day 5 - Greedy Techniques"
 make

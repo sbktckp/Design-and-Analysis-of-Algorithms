@@ -6,10 +6,18 @@
 
 ## Run
 
+From the repo root:
+
+```bash
+./run 9.1      # 5 vertices, then the pair 2 5
+```
+
+Or build this folder on its own:
+
 ```bash
 cd "Day 9 - All Pair Shortest Path"
 make
-./bin/9.1_floyd_warshall    # 5 vertices, then the pair 2 5
+./bin/9.1_floyd_warshall
 ```
 
 Output for the supplied graph, matching the sheet:
