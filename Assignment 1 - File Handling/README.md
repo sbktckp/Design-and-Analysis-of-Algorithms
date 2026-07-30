@@ -8,80 +8,129 @@
 
 ## Run
 
-Day 1 numbers its programs 1.1 to 1.4 as well, so from the repo root put a
-piece of this folder's name in front of the number:
+Day 1 numbers its programs 1.1 to 1.4 as well, so name this folder:
 
 ```bash
-./run assignment/1.1
-./run assignment/1.2
-./run assignment/1.3
+./run "assignment 1/1.1"
+./run "assignment 1/1.2"
+./run "assignment 1/1.3"
 ```
 
-Or build this folder on its own:
+Or build it in place:
 
 ```bash
 cd "Assignment 1 - File Handling"
 make
-
 ./bin/1.1_compare_files            # try data/first.txt and data/second.txt
-./bin/1.2_uppercase_convert        # or: ./bin/1.2_uppercase_convert in.txt out.txt
+./bin/1.2_uppercase_convert        # or give it two paths
 ./bin/1.3_odd_even_split           # type numbers, -1 to stop
 ```
 
-Run from inside this folder so the relative `data/` paths resolve.
+## Five things about files in C that all three programs rely on
 
-## Sample runs
+**A FILE pointer is a handle, not the file.** `fopen` returns a pointer to
+bookkeeping the library keeps: where you are in the file, whether the end was
+reached, buffered bytes not yet written. `fclose` flushes that buffer, which is
+why a program that skips it can leave an output file short or empty.
 
-1.1 with `data/first.txt` and `data/second.txt` reports the files identical.
-With `data/first.txt` and `data/third.txt` it reports the first difference at
-character 41, `d` against `c`.
+**The mode string decides everything.** `"r"` needs the file to exist. `"w"`
+creates it, and if it already exists it is emptied THE MOMENT IT OPENS. `"a"`
+appends. That truncation is behind the most common bug in this assignment.
 
-1.2 turns `data/test.txt` into `data/upper.txt` and prints the result.
+**EOF is not a character.** `getc` returns an `int`, not a `char`, because it has
+to be able to return every possible byte value AND a separate end of file signal.
+Store it in a `char` and one legitimate byte value becomes indistinguishable from
+EOF, so the loop can stop early or never stop at all.
 
-1.3 with `10 7 4 25 30 13 -1` writes six numbers to `data/DATA.dat`, then
-splits them into `data/ODD.dat` holding 7 25 13 and `data/EVEN.dat` holding
-10 4 30.
+**Test before you write.** `while ((c = getc(f)) != EOF)` reads, checks, then
+acts. A `do while` that writes before checking will always append one junk
+character, because it processes the EOF signal as though it were data.
 
-## Supplied files
+**Reading numbers is different from reading characters.** `fscanf(f, "%d", &x)`
+returns how many items it managed to fill, so `== 1` is the natural end of loop
+test for a file of numbers.
 
-`data/test.txt` for 1.2, and `data/first.txt`, `data/second.txt`,
-`data/third.txt` for 1.1, where the second is a copy of the first and the third
-differs by one word. The files these programs generate, `upper.txt`,
-`DATA.dat`, `ODD.dat` and `EVEN.dat`, are gitignored.
+## How each program works
 
-## Notes
+### 1.1 Are two files identical
 
-These are written in ISO C17 rather than the Turbo C style of the original
-handwritten answers, so `void main`, `clrscr`, `getch`, `fcloseall` and
-`process.h` are gone. Four real bugs from the originals are worth naming, since
-they are the kind of thing a viva question lands on:
+Read both files one character at a time, in step. Stop at the first difference,
+or when both reach the end together.
 
-- **1.1** must compare a freshly read pair of characters. The original read
-  `getc` once before the loop and again inside it, so the first character was
-  never compared, and it reset `flag` to 0 on every match, which erased any
-  earlier difference. It also could not tell a file from its own prefix. Here
-  the loop breaks on the first mismatch and treats "one file ended, the other
-  did not" as a difference.
-- **1.2** must write to a DIFFERENT file. The original opened `test.txt` for
-  reading and then opened `test.txt` again for writing, which truncates it to
-  zero length before a single character can be read, so the output was always
-  empty.
-- **1.2** must test for EOF before writing. A `do while` that converts and
-  writes first appends one junk character, since EOF is not a character.
-- **1.3** classifies with `number % 2 != 0` rather than `== 0`. In C the
-  remainder takes the sign of the dividend, so `-7 % 2` is -1, and testing
-  against 0 the wrong way round files negative odd numbers as even.
+The part worth thinking about is what "identical" requires. It is not enough that
+every character matched, because one file may simply have run out earlier. If the
+loop ends with `c1 == c2` then both returned EOF at the same moment and the files
+truly match. If one returned a real character while the other returned EOF, they
+differ, and the code catches that with no extra work.
 
-One deliberate change: the numbers travel as text through `fprintf` and
-`fscanf` instead of the `putw` and `getw` of the original. Those two write raw
-ints, so the files are unreadable in an editor and not portable between
-machines of different endianness. Text costs nothing here and the data files
-can be inspected by eye.
+The full version also reports WHERE the difference is, and which file ended first,
+which is genuinely useful and costs about six lines.
+
+Both files are opened in `"rb"` mode. On Linux it changes nothing, but it is the
+right habit: on Windows text mode quietly translates line endings, so a byte for
+byte comparison should not use it.
+
+### 1.2 Convert a file to upper case
+
+Copy the file character by character through `toupper`, which lifts lowercase
+letters and leaves digits, spaces and punctuation alone.
+
+The trap is the output file. Opening the SAME name for writing empties it before
+a single character can be read, so the result is always empty and it looks like a
+logic error when it is really a mode error. Read from one name, write to another.
+
+The second trap is loop shape, covered above: check for EOF before writing, or
+the output gains a junk character at the end.
+
+`toupper` comes from `<ctype.h>` and takes an `int`, which fits the `int` that
+`getc` already returns.
+
+### 1.3 Split numbers into odd and even files
+
+Three short passes. Capture what the user types into DATA. Reopen DATA for
+reading and send each number to ODD or EVEN. Reopen those two and display them.
+
+The question specifically asks for the split to READ THE FILE rather than reuse an
+array still sitting in memory, so the reopen is the point of the exercise, not
+clumsiness.
+
+**The sign trap, worth knowing well.** In C the remainder takes the sign of the
+left operand, so `-7 % 2` is -1, not 1. Testing `x % 2 == 1` therefore files
+negative odd numbers as even. Either test `x % 2 != 0`, which the full version
+does, or lean on truthiness, since any non zero value counts as true:
+
+```c
+fprintf(x % 2 ? odd : even, "%d ", x);
+```
+
+The numbers are stored as text through `fprintf` rather than with `putw`. `putw`
+writes the raw bytes of an int, so the file is unreadable in an editor and does
+not transfer between machines that order bytes differently. Text costs nothing
+here and can be checked by eye. If your record specifically wants `putw` and
+`getw`, that is a two line change.
+
+## About the handwritten originals
+
+These are ISO C17 rather than Turbo C, so `void main`, `clrscr`, `getch`,
+`fcloseall` and `process.h` are gone. None of them exist in standard C or on
+Linux, so a Codespace or WSL rejects all of them.
+
+Four real bugs from the original answers are fixed, and each is a good viva
+question:
+
+- **1.1** called `getc` once before the loop and again inside it, so the first
+  character was never compared. It also reset its flag to 0 on every match,
+  erasing any difference found earlier, and could not tell a file from its own
+  prefix.
+- **1.2** opened `test.txt` for reading and `test.txt` again for writing, so the
+  input was destroyed before it could be read.
+- **1.2** used `do while`, appending one junk character.
+- **1.3** routed on `number % 2 == 0`, filing negative odd numbers as even.
 
 ## Complexity
 
 | No. | Time | Space |
 |-----|------|-------|
-| 1.1 | O(n) in the length of the shorter file | O(1) |
+| 1.1 | O(n) in the shorter file | O(1) |
 | 1.2 | O(n) | O(1) |
-| 1.3 | O(n) over three passes | O(1), nothing is held in memory |
+| 1.3 | O(n) over three passes | O(1), nothing held in memory |
