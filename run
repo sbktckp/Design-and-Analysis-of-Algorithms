@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+#
+# Build and run any program by its number, from anywhere in the repo.
+#
+#   ./run              list every program
+#   ./run 6.1          build and run 6.1_prim_mst inside its own folder
+#   ./run 2.1 150 data/inDec.dat data/outBin.dat
+#                      anything after the number is passed to the program
+#
+# The script changes into the program's own folder before running it, because
+# the programs open their input files by relative path.
+#
+# If the executable bit did not survive the clone, call it as: bash run 6.1
+
+set -euo pipefail
+cd "$(dirname "$0")"
+
+if [ "$#" -eq 0 ]; then
+	printf 'Programs in this repo:\n\n'
+	find . -mindepth 2 -maxdepth 2 -name '*.c' | sort | while IFS= read -r path; do
+		folder=$(dirname "$path")
+		printf '  %-34s %s\n' "$(basename "$path" .c)" "${folder#./}"
+	done
+	printf '\nRun one with:  ./run <number>   for example  ./run 6.1\n'
+	exit 0
+fi
+
+number="$1"
+shift
+
+matches=$(find . -mindepth 2 -maxdepth 2 -name "${number}_*.c" | sort)
+count=$(printf '%s\n' "$matches" | grep -c . || true)
+
+if [ "$count" -eq 0 ]; then
+	printf 'No program numbered %s. Run ./run with no arguments to see the list.\n' "$number" >&2
+	exit 1
+fi
+if [ "$count" -gt 1 ]; then
+	printf 'More than one program matches %s:\n%s\n' "$number" "$matches" >&2
+	exit 1
+fi
+
+source_path=$matches
+folder=$(dirname "$source_path")
+program=$(basename "$source_path" .c)
+
+make -s -C "$folder" "bin/$program"
+cd "$folder"
+exec "./bin/$program" "$@"

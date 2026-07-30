@@ -1,13 +1,18 @@
 {
   "name": "DAA Lab (C)",
   "image": "mcr.microsoft.com/devcontainers/cpp:1-ubuntu-24.04",
+  "postCreateCommand": "chmod +x run && make",
+  "waitFor": "postCreateCommand",
   "customizations": {
     "vscode": {
       "extensions": [
         "ms-vscode.cpptools-extension-pack"
       ],
       "settings": {
-        "terminal.integrated.defaultProfile.linux": "bash"
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "files.eol": "\n",
+        "C_Cpp.default.cStandard": "c17",
+        "C_Cpp.default.compilerPath": "/usr/bin/gcc"
       }
     }
   }
