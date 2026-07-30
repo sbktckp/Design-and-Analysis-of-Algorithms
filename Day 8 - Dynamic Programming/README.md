@@ -9,49 +9,101 @@ Both programs read from the keyboard.
 
 ## Run
 
-From the repo root:
-
 ```bash
 ./run 8.1
 ./run 8.2
+./run compact/8.1
 ```
 
-Or build this folder on its own:
+## What dynamic programming is, in one paragraph
 
-```bash
-cd "Day 8 - Dynamic Programming"
-make
-./bin/8.1_matrix_chain_multiplication
-./bin/8.2_longest_common_subsequence
+Some problems break into smaller versions of themselves, but the smaller pieces
+overlap and get asked for again and again. Plain recursion solves the same piece
+thousands of times and takes exponential time. Dynamic programming solves each
+piece once, writes the answer in a table, and looks it up afterwards.
+
+Two things follow from that, and both show up in today's programs. You need an
+order of filling that guarantees a piece is already solved before anything needs
+it, which is why both loops start small. And the table holds costs or lengths,
+not the answers themselves, so a second walk is needed to recover the actual
+bracketing or the actual subsequence.
+
+## How each program works
+
+### 8.1 Matrix chain multiplication
+
+Matrix multiplication is associative, so `(A1 A2) A3` and `A1 (A2 A3)` give the
+same matrix. They do not cost the same. Multiplying an a x b matrix by a b x c
+matrix takes a x b x c scalar multiplications, so where the brackets go changes
+the amount of arithmetic enormously. For the sample chain, the best bracketing
+needs 9375 multiplications while going strictly left to right needs 87500.
+
+`m[i][j]` is the cheapest cost of multiplying Ai through Aj. To fill one entry,
+try every place k where the chain could be split, and pay three things: the cost
+of the left part, the cost of the right part, and the single multiplication that
+joins the two results.
+
+```c
+cost = m[i][k] + m[k+1][j] + p[i-1] * p[k] * p[j];
 ```
 
-## Sample runs
+Keep the smallest, and record the winning k in `s[i][j]`.
 
-8.1 with the sheet's four matrices 30x35, 35x15, 15x5, 5x10 prints the M table,
-the S table, the parenthesization `((A1 (A2 A3)) A4)` and 9375 scalar
-multiplications.
+**The dimension array.** Four matrices need five numbers, because neighbours
+share a dimension. Matrix Ai is `p[i-1]` by `p[i]`. So for 30x35, 35x15, 15x5,
+5x10, p is `30 35 15 5 10`. That is why the joining cost reads
+`p[i-1] * p[k] * p[j]`: the left result is p[i-1] by p[k], the right result is
+p[k] by p[j].
 
-8.2 with `10010101` and `010110110` prints `LCS: 100110` and `LCS Length: 6`.
+**Fill order.** The outer loop is chain LENGTH, from 2 upwards, not i or j. A
+chain of four leans on chains of three and two, which must already be finished.
+Getting this order wrong is the classic way to produce a table full of garbage.
 
-## Notes
+**Reading the answer out.** `m[1][n]` is the cost. The bracketing lives in the s
+table, recovered recursively: to print Ai..Aj, print an open bracket, then
+everything up to `s[i][j]`, then everything after it, then a close bracket.
+Since `s[1][4]` is 3, the outermost split is after A3, giving `((A1 (A2 A3)) A4)`.
 
-- **8.1** fills the tables by increasing chain length, because the cost of a
-  long chain depends on shorter ones that must already be solved. `m[i][j]` is
-  the cheapest cost and `s[i][j]` the split point that achieved it, which is
-  all the information the recursive printer needs to rebuild the brackets.
-- Dimension compatibility is validated while reading, so a chain like 3x4 then
-  5x6 is rejected with a clear message instead of producing a meaningless
-  number.
-- The dimension array `p` has one more entry than the matrix count, since
-  matrix Ai is `p[i-1]` by `p[i]`, which is why the recurrence multiplies
-  `p[i-1] * p[k] * p[j]`.
-- **8.2** builds the `c` table and then walks it backwards from `c[m][n]` to
-  recover the subsequence itself. When several subsequences share the maximum
-  length, one of them is reported, which is all the definition requires.
+The full version also validates that neighbouring dimensions agree, so entering
+3x4 followed by 5x6 gets a clear refusal instead of a meaningless number.
+
+O(n^3) time, since there are O(n^2) entries and each tries up to n splits, and
+O(n^2) space.
+
+### 8.2 Longest common subsequence
+
+A subsequence keeps the order of characters but is allowed to skip. So `100110`
+is a subsequence of `10010101`, whereas a subSTRING would have to be contiguous.
+That difference is the first thing to get straight.
+
+`c[i][j]` is the LCS length of the first i characters of X and the first j of Y.
+There are only two cases:
+
+- **the characters match.** They can both be used, so take the answer for the
+  two shorter prefixes and add one: `c[i-1][j-1] + 1`.
+- **they do not match.** One of them has to be given up. Try both and keep the
+  better: `max(c[i-1][j], c[i][j-1])`.
+
+Row 0 and column 0 stay zero, since an empty string shares nothing. Filling row
+by row means both neighbours and the diagonal are always ready.
+
+**Recovering the subsequence.** The table only holds lengths, so start at the
+bottom right and walk backwards. On a match, that character is part of the answer,
+so record it and step diagonally. On a mismatch, step in whichever direction the
+value came from. The characters arrive last first, which is why they are written
+into the output buffer from the end towards the front.
+
+**Several answers can be correct.** When there are ties, different tie breaking
+gives a different subsequence of the same length. `100110` is one valid answer of
+length 6 for the sample, and so are others. The LENGTH is unique, the string is
+not.
+
+O(mn) time and O(mn) space. If only the length were needed, two rows would be
+enough, O(min(m,n)) space, but then the subsequence could not be recovered.
 
 ## Complexity
 
 | No. | Time | Space |
 |-----|------|-------|
-| 8.1 | O(n^3) over all chain lengths and split points | O(n^2) for the two tables |
-| 8.2 | O(mn) | O(mn), reducible to O(min(m,n)) if only the length is wanted |
+| 8.1 | O(n^3) | O(n^2) for the two tables |
+| 8.2 | O(mn) | O(mn), reducible if only the length is wanted |
