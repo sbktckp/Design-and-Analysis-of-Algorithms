@@ -11,7 +11,13 @@
 
 ## START HERE
 
-Open the repo in a GitHub Codespace: green **Code** button, then **Codespaces**, then **Create codespace on main**. The container installs `gcc` and `make` and builds all 36 programs before it hands you a terminal. Then:
+Open the repo in a GitHub Codespace: green **Code** button, then **Codespaces**, then **Create codespace on main**. The container installs `gcc` and `make` and builds all 36 programs before it hands you a terminal.
+
+Then run a program whichever way suits you.
+
+**Open a .c file and press the Run button**, the triangle at the top right of the editor. It compiles and runs that one file in a terminal panel. Nothing to configure, it works for every program in the repo.
+
+**Or use the terminal:**
 
 ```bash
 ./run              # list everything
@@ -19,7 +25,7 @@ Open the repo in a GitHub Codespace: green **Code** button, then **Codespaces**,
 ./run compact/6.1  # the same thing, short enough to hand write
 ```
 
-`./run` works out which folder a program lives in and starts it there, so the relative `data/` paths always resolve. Words after the number go to the program:
+Words after the number go to the program:
 
 ```bash
 ./run 2.1 150 data/inDec.dat data/outBin.dat
@@ -78,13 +84,23 @@ Day 6 - Minimum Cost Spanning Tree/
 
 Program files are named by the number the lab sheet uses, then a short name, so `8.2_longest_common_subsequence.c` is question 8.2. Nothing is renamed to be tidy, because matching the sheet matters more.
 
+## HOW THE RUN BUTTON IS SET UP
+
+Most of these programs open a data file by a relative path, `data/inDec.dat` rather than a full path from the root. That means the folder a program is started FROM decides whether it finds its files.
+
+`.vscode/tasks.json` sets `cwd` to the folder of the file you have open, so the Run button always starts a program in its own folder and the paths resolve. Without that one line the editor would launch from the repo root and every file-reading program would fail. `.vscode/launch.json` does the same for the debugger, so breakpoints work too.
+
+Binaries land in that folder's `bin/`, which is gitignored and hidden from the Explorer, so the tree stays readable.
+
 ## IF SOMETHING GOES WRONG
 
-**A program says it cannot open a data file.** It was started from the wrong folder. Use `./run 6.1`, which handles that, or `cd` into the folder first.
+**A program says it cannot open a data file.** It was started from the wrong folder. Use the Run button, or `./run 6.1`, or `cd` into the folder first.
 
 **`./run` says permission denied.** The executable bit did not survive the clone. Run `chmod +x run` once, or call it as `bash run 6.1`.
 
 **`./run 1.1` says the number exists in two places.** Day 1 and Assignment 1 both number their programs 1.1. It prints the two exact commands to choose from.
+
+**Your copy behaves differently from what a README describes.** Pull first, with `git stash` before it if you have local edits.
 
 **Codespaces will not open.** Nothing here depends on it. Any machine with `gcc` and `make` works:
 
