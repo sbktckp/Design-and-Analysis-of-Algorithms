@@ -1,0 +1,9 @@
+{
+  "C_Cpp.default.cStandard": "c17",
+  "C_Cpp.default.compilerPath": "/usr/bin/gcc",
+  "files.eol": "\n",
+  "files.exclude": {
+    "**/bin": true
+  },
+  "terminal.integrated.defaultProfile.linux": "bash"
+}
