@@ -8,13 +8,19 @@
 
 FIND_FOLDERS = find . -mindepth 2 -maxdepth 3 -name '*.c' -exec dirname {} ';' | sort -u | tr ' ' '\001'
 
-all:
+all: setup
 	@for packed in `$(FIND_FOLDERS)`; do \
 		folder=`printf '%s' "$$packed" | tr '\001' ' '`; \
 		printf '==> %s\n' "$$folder"; \
 		$(MAKE) -s -C "$$folder" || exit 1; \
 	done
 	@printf '\nEverything built. Run a program with:  ./run 6.1  or  ./run compact/6.1\n'
+
+# The GitHub contents API cannot set the executable bit, so a fresh clone gets
+# run as mode 644 and ./run fails with permission denied. This fixes it once,
+# and it is harmless to repeat.
+setup:
+	@chmod +x run 2>/dev/null || true
 
 clean:
 	@for packed in `$(FIND_FOLDERS)`; do \
@@ -23,7 +29,7 @@ clean:
 	done
 	@printf 'All bin folders removed.\n'
 
-list:
+list: setup
 	@./run
 
-.PHONY: all clean list
+.PHONY: all setup clean list

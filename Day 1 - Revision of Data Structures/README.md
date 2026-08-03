@@ -7,20 +7,82 @@
 | 1.3 | Duplicate Element Count | `1.3_duplicate_elements.c` | `data/1.3_input.txt` |
 | 1.4 | Rotate Right Array | `1.4_rotate_right.c` | keyboard |
 
-## Run
+## Run in the terminal
+
+From the repo root. Each block shows the command, then what to type when it
+asks, then what comes back.
+
+### 1.1 Second smallest and largest
 
 ```bash
-./run 1.1              # full version
-./run compact/1.1      # short version for the record book
+./run 1.1
+```
+```
+Size of the array (n): 10
+
+Second smallest: 5
+Second largest : 66
 ```
 
-Or build the folder on its own:
+### 1.2 Prefix sum
+
+```bash
+./run 1.2
+```
+```
+Size of the array (N): 5
+Enter 5 elements: 3 4 5 1 2
+
+Input Array : 3 4 5 1 2
+Output Array: 3 7 12 13 15
+```
+
+### 1.3 Duplicate elements
+
+```bash
+./run 1.3
+```
+```
+Enter how many numbers you want to read from file: 15
+
+Total number of duplicate values = 4
+The most repeating element in the array = 10 (5 times)
+```
+
+### 1.4 Rotate right
+
+```bash
+./run 1.4
+```
+```
+Size of the array (N): 9
+Enter an array A of size N (9): 11 22 33 44 55 66 77 88 99
+Number of elements to rotate (p2): 5
+
+Before ROTATE: 11 22 33 44 55 66 77 88 99
+After  ROTATE: 55 11 22 33 44 66 77 88 99
+```
+
+### The compact versions
+
+Same numbers with `compact/` in front, same inputs:
+
+```bash
+./run compact/1.1
+./run compact/1.2
+./run compact/1.3
+./run compact/1.4
+```
+
+### Without the run script
 
 ```bash
 cd "Day 1 - Revision of Data Structures"
 make
 ./bin/1.1_second_smallest_largest
 ```
+
+Stay inside the folder, since 1.1 and 1.3 open `data/` by a relative path.
 
 ## How each program works
 
@@ -63,7 +125,7 @@ turn up constantly: any "sum between index i and j" question becomes
 
 Two answers are needed: how many values occur more than once, and which value
 occurs most often. Note the first is a count of VALUES, not of extra copies. In
-the sample data 10 appears four times but contributes 1 to the duplicate count.
+the sample data 10 appears five times but contributes 1 to the duplicate count.
 
 The compact version compares every element against every other, O(n^2), and
 skips any value it has already handled so nothing is counted twice.
