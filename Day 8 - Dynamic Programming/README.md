@@ -7,13 +7,72 @@ Both programs read from the keyboard.
 | 8.1 | Matrix Chain Multiplication | `8.1_matrix_chain_multiplication.c` |
 | 8.2 | Longest Common Subsequence | `8.2_longest_common_subsequence.c` |
 
-## Run
+## Run in the terminal
+
+### 8.1 Matrix chain multiplication
 
 ```bash
 ./run 8.1
-./run 8.2
-./run compact/8.1
 ```
+```
+Enter number of matrices: 4
+Enter row and col size of A1: 30 35
+Enter row and col size of A2: 35 15
+Enter row and col size of A3: 15 5
+Enter row and col size of A4: 5 10
+
+M Table:
+0 15750 7875 9375
+0 0 2625 4375
+0 0 0 750
+0 0 0 0
+
+S Table:
+0 1 1 3
+0 0 2 3
+0 0 0 3
+0 0 0 0
+
+Optimal parenthesization: ((A1 (A2 A3)) A4)
+The optimal ordering of the given matrices requires 9375 scalar multiplications.
+```
+
+Try entering mismatched dimensions, say 30 35 then 20 15, and it refuses with a
+clear message instead of printing a meaningless number.
+
+### 8.2 Longest common subsequence
+
+```bash
+./run 8.2
+```
+```
+Enter the first string into an array: 10010101
+Enter the second string into an array: 010110110
+
+LCS: 100110
+LCS Length: 6
+```
+
+It takes any strings, not only binary ones. Try `ABCBDAB` and `BDCABA` for the
+textbook example.
+
+### The compact versions
+
+```bash
+./run compact/8.1
+./run compact/8.2
+```
+
+### Without the run script
+
+```bash
+cd "Day 8 - Dynamic Programming"
+make
+./bin/8.1_matrix_chain_multiplication
+./bin/8.2_longest_common_subsequence
+```
+
+Neither reads a data file, so these two work from anywhere.
 
 ## What dynamic programming is, in one paragraph
 
@@ -63,9 +122,6 @@ Getting this order wrong is the classic way to produce a table full of garbage.
 table, recovered recursively: to print Ai..Aj, print an open bracket, then
 everything up to `s[i][j]`, then everything after it, then a close bracket.
 Since `s[1][4]` is 3, the outermost split is after A3, giving `((A1 (A2 A3)) A4)`.
-
-The full version also validates that neighbouring dimensions agree, so entering
-3x4 followed by 5x6 gets a clear refusal instead of a meaningless number.
 
 O(n^3) time, since there are O(n^2) entries and each tries up to n splits, and
 O(n^2) space.

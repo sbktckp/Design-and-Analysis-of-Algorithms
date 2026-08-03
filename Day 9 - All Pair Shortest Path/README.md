@@ -4,25 +4,47 @@
 |-----|---------|------|-------|
 | 9.1 | Floyd Warshall | `9.1_floyd_warshall.c` | `data/inDiAdjMat2.dat` |
 
-## Run
+## Run in the terminal
 
 ```bash
-./run 9.1      # 5 vertices, then the pair 2 5
-./run compact/9.1
+./run 9.1
 ```
-
-Output for the supplied graph, matching the sheet:
-
 ```
-   0    1   -3    2   -4
-   3    0   -4    1   -1
-   7    4    0    5    3
-   2   -1   -5    0   -2
-   8    5    1    6    0
+Number of Vertices: 5
 
+Shortest path weight matrix:
+    0    1   -3    2   -4
+    3    0   -4    1   -1
+    7    4    0    5    3
+    2   -1   -5    0   -2
+    8    5    1    6    0
+
+Enter the source and destination vertex: 2 5
 Path: 2-->4-->1-->5
 Cost: -1
 ```
+
+The pair is asked for after the matrix is printed, so type `5`, look at the
+matrix, then type `2 5` on one line.
+
+Try `3 5` as well. The direct route does not exist, but the algorithm finds one
+through other vertices, which is a good thing to demonstrate.
+
+### The compact version
+
+```bash
+./run compact/9.1     # same 5, then 2 5
+```
+
+### Without the run script
+
+```bash
+cd "Day 9 - All Pair Shortest Path"
+make
+./bin/9.1_floyd_warshall
+```
+
+Stay inside the folder, since it opens `data/` by a relative path.
 
 ## Input format
 
