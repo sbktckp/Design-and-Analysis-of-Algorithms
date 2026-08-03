@@ -10,38 +10,70 @@ results to a separate disc file, as the lab sheet asks.
 
 2.2 is not in the lab manual. It jumps from 2.1 to 2.3.
 
-## Run
+## Run in the terminal
 
-The arguments are optional. With none, both programs use the files in `data/`:
+From the repo root. These are the only two programs in the repo that take
+command line arguments, and the arguments are optional.
+
+### 2.1 Decimal to binary
 
 ```bash
 ./run 2.1
-./run 2.3
-./run compact/2.1
-./run compact/2.3
+```
+```
+Contents of the output disc file "data/outBin.dat":
+The binary equivalent of 30 is 0000000000011110
+The binary equivalent of 75 is 0000000001001011
+The binary equivalent of 2564 is 0000101000000100
+...
 ```
 
-With arguments, exactly as the sheet writes it:
+With the arguments the sheet specifies:
 
 ```bash
 ./run 2.1 150 data/inDec.dat data/outBin.dat
+```
+
+### 2.3 GCD of pairs
+
+```bash
+./run 2.3
+```
+```
+Contents of the output disc file "data/outGcd.dat" (20 pairs):
+The GCD of 8 and 12 is 4
+The GCD of 20 and 45 is 5
+The GCD of 30 and 80 is 10
+...
+```
+
+With arguments:
+
+```bash
 ./run 2.3 data/inGcd.dat data/outGcd.dat
 ```
 
-For the compact versions the paths are relative to the `compact/` folder, so
-they need `../data/`:
+### The compact versions
+
+These live one folder deeper, so their paths need `../data/`:
 
 ```bash
+./run compact/2.1
+./run compact/2.3
+
 ./run compact/2.1 3 ../data/inDec.dat ../data/outBin.dat
 ./run compact/2.3 ../data/inGcd.dat ../data/outGcd.dat
 ```
 
-Or by hand, the way the sheet writes it:
+### Exactly as the sheet writes it
 
 ```bash
 cd "Day 2 - Fundamentals of Algorithmic Problem Solving"
 gcc 2.1_decimal_to_binary.c -o lab2q1
 ./lab2q1 150 data/inDec.dat data/outBin.dat
+
+gcc 2.3_gcd_pairs.c -o lab2q2
+./lab2q2 data/inGcd.dat data/outGcd.dat
 ```
 
 If you get `No such file or directory`, the program was started from the wrong
