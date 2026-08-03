@@ -4,16 +4,15 @@
 |-----|---------|------|-------|
 | 7.1 | Dijkstra Shortest Path | `7.1_dijkstra_shortest_path.c` | `data/inDiAdjMat1.dat` |
 
-## Run
+## Run in the terminal
 
 ```bash
-./run 7.1      # 5 vertices, source vertex 1
-./run compact/7.1
+./run 7.1
 ```
-
-Output for the supplied graph, matching the sheet:
-
 ```
+Enter the Number of Vertices: 5
+Enter the Source Vertex: 1
+
 Source   Destination  Cost   Path
 1        1            0      -
 1        2            8      1->4->2
@@ -21,6 +20,25 @@ Source   Destination  Cost   Path
 1        4            5      1->4
 1        5            7      1->4->5
 ```
+
+Try source 4 as well. It is a directed graph, so the answers are not symmetric,
+which is worth showing if asked whether direction matters.
+
+### The compact version
+
+```bash
+./run compact/7.1     # same 5 and 1
+```
+
+### Without the run script
+
+```bash
+cd "Day 7 - Single Source Shortest Path"
+make
+./bin/7.1_dijkstra_shortest_path
+```
+
+Stay inside the folder, since it opens `data/` by a relative path.
 
 ## Input format
 

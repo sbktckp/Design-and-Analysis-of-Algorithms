@@ -8,15 +8,78 @@ different formats the two questions specify.
 | 6.1 | Prim MST | `6.1_prim_mst.c` | `data/inUnAdjMat.dat` cost adjacency matrix |
 | 6.2 | Kruskal MST | `6.2_kruskal_mst.c` | `data/inEdgeList.dat` edge list |
 
-## Run
+## Run in the terminal
+
+### 6.1 Prim's MST
 
 ```bash
-./run 6.1      # asks for 9 vertices, starting vertex 1
-./run 6.2      # reads n, m and the edges from the file
-./run compact/6.1
+./run 6.1
+```
+```
+Enter the Number of Vertices: 9
+Enter the Starting Vertex: 1
+
+Cost adjacency matrix of the minimum spanning tree:
+  0   4   0   0   0   0   0   8   0
+  4   0   0   0   0   0   0   0   0
+  ...
+
+Selected edges:
+  1 -- 2  cost 4
+  6 -- 3  cost 4
+  3 -- 4  cost 7
+  4 -- 5  cost 9
+  7 -- 6  cost 2
+  8 -- 7  cost 1
+  1 -- 8  cost 8
+  3 -- 9  cost 2
+
+Total Weight of the Spanning Tree: 37
 ```
 
-Both report a total cost of 37, the answer on the sheet.
+### 6.2 Kruskal's MST
+
+No keyboard input at all, it reads everything from the file:
+
+```bash
+./run 6.2
+```
+```
+Vertices: 9   Edges: 14
+
+Edge      Cost
+7--8      1
+3--9      2
+6--7      2
+1--2      4
+3--6      4
+3--4      7
+1--8      8
+4--5      9
+
+Total Weight of the Spanning Tree: 37
+```
+
+Run both and point at the two totals. Same 37 by completely different routes,
+and the edge lists differ where weights tie.
+
+### The compact versions
+
+```bash
+./run compact/6.1     # same 9 and 1
+./run compact/6.2
+```
+
+### Without the run script
+
+```bash
+cd "Day 6 - Minimum Cost Spanning Tree"
+make
+./bin/6.1_prim_mst
+./bin/6.2_kruskal_mst
+```
+
+Stay inside the folder, since both open `data/` by a relative path.
 
 ## Input formats
 
