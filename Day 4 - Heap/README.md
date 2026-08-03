@@ -4,25 +4,57 @@
 |-----|---------|------|-------|
 | 4.1 | Person Heap | `4.1_person_heap.c` | `data/inPerson.dat` |
 
-## Run
+## Run in the terminal
 
 ```bash
 ./run 4.1
+```
+
+Option 1 must come first, since everything else works on the array it loads.
+A full session that answers the question the sheet asks:
+
+```
+Enter option: 1
+
+Data read from file:
+Id   Name               Age   Height  Weight(pound)
+0    Adarsh Hota        39    77      231
+1    Levi Maier         56    77      129
+...
+
+Enter option: 2
+Min-heap on age (root is the youngest):
+...
+
+Enter option: 4
+Youngest person: Norma Webster, age 23
+Weight of youngest person: 65.77 kg
+
+Enter option: 7
+```
+
+Option 3 builds the max-heap on weight, option 5 asks for a new person's
+details, option 6 deletes the oldest.
+
+### The compact version
+
+No menu, it reads the file, builds the min-heap and prints the youngest
+person's weight:
+
+```bash
 ./run compact/4.1
 ```
 
-Option 1 on the menu must run first, since everything else works on the array it
-loads.
+### Without the run script
 
+```bash
+cd "Day 4 - Heap"
+make
+./bin/4.1_person_heap
 ```
-1. Read Data
-2. Create a Min-heap based on the age
-3. Create a Max-heap based on the weight
-4. Display weight of the youngest person
-5. Insert a new person into the Min-heap
-6. Delete the oldest person
-7. Exit
-```
+
+Stay inside the folder, since the program opens `data/inPerson.dat` by a
+relative path.
 
 ## Input format
 
