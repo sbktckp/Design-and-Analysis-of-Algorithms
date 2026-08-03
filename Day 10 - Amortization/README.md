@@ -8,14 +8,105 @@ All three programs are self contained and need no data files.
 | 10.2 | Fibonacci Fitstring | `10.2_fibonacci_fitstring.c` |
 | 10.3 | Binary Counter Reset | `10.3_binary_counter_reset.c` |
 
-## Run
+## Run in the terminal
+
+### 10.1 Randomized quicksort
 
 ```bash
-./run 10.1     # enter 300
-./run 10.2     # option 4 runs the self test
-./run 10.3     # option 4 runs the sample sequence
-./run compact/10.1
+./run 10.1
 ```
+```
+Enter the number of elements: 300
+
+Input was already sorted, 300 elements
+Output verified sorted    : yes
+Comparisons made          : 2514
+Maximum recursion depth   : 18
+Expected 1.39 n log2 n    : 3432
+Deterministic worst case  : 44850
+```
+
+Run it two or three times. The comparison count changes every run, since the
+pivots are random, but it stays in the low thousands and nowhere near 44850.
+That variation IS the demonstration, so do not be surprised by it.
+
+Compare the number against `./run 3.2` option 1, which is the same input and the
+same algorithm without the randomised pivot.
+
+### 10.2 Fibonacci fitstring
+
+```bash
+./run 10.2
+```
+
+The self test is the quickest way to show it works:
+
+```
+Enter option: 4
+Count up to: 2000
+Self test over 0 to 2000 and back: PASSED
+```
+
+Or step through by hand with option 1 repeatedly:
+
+```
+Enter option: 1
+value = 1      fitstring = 1      (repairs: 0)
+Enter option: 1
+value = 2      fitstring = 10     (repairs: 1)
+Enter option: 1
+value = 3      fitstring = 100    (repairs: 1)
+Enter option: 1
+value = 4      fitstring = 101    (repairs: 1)
+Enter option: 1
+value = 5      fitstring = 1000   (repairs: 2)
+```
+
+Read 101 as F4 + F2, which is 3 + 1 = 4. Option 2 decrements, option 5 exits.
+
+### 10.3 Binary counter with reset
+
+```bash
+./run 10.3
+```
+
+Option 4 replays the sheet's table in one go:
+
+```
+Enter option: 4
+
+Bit pattern (low 8 bits shown)   Operation  Cost
+00000000   Initial    cost 0    total 0
+00000001   Increment  cost 1    total 1
+00000010   Increment  cost 2    total 3
+00000000   Reset      cost 3    total 6
+00000001   Increment  cost 1    total 7
+00000000   Reset      cost 2    total 9
+Total cost of 5 operations: 9, which is O(n)
+```
+
+Or drive it yourself with 1 to increment and 2 to reset. Increment several times
+first and the reset costs more, which is the pointer doing its job.
+
+### The compact versions
+
+```bash
+./run compact/10.1
+./run compact/10.2
+./run compact/10.3
+```
+
+### Without the run script
+
+```bash
+cd "Day 10 - Amortization"
+make
+./bin/10.1_randomized_quicksort
+./bin/10.2_fibonacci_fitstring
+./bin/10.3_binary_counter_reset
+```
+
+None of the three reads a data file, so they work from anywhere.
 
 ## Two ideas that sound alike and are not
 
@@ -50,11 +141,6 @@ Pick a random element and move it into the pivot slot. Now the quality of the
 split depends on the dice, not on the data. The expected number of comparisons is
 2n ln n, about 1.39 n log2 n, and that holds for EVERY input, including the one
 that used to be fatal.
-
-This program deliberately feeds it an already sorted array to show it. With 300
-elements the deterministic version needs 44850 comparisons at recursion depth 300.
-The randomized version needs somewhere around 2500 at depth 18, and the exact
-number changes on each run since the pivots differ.
 
 Say this precisely if asked: the worst case is still O(n^2), it has not been
 eliminated. What changed is that reaching it now requires a run of bad luck
@@ -123,10 +209,9 @@ than what INCREMENT actually built up.
 Both constant, so any sequence of n operations costs O(n) in total, which is
 exactly what was asked.
 
-Option 4 reproduces the table from the sheet: five operations for 9 units. Notice
-the second reset costs less than the first, because the counter had not climbed as
-high. That is the pointer doing its job, and it is the clearest one line
-explanation of the whole question.
+Notice in the sample run that the second reset costs less than the first, because
+the counter had not climbed as high. That is the pointer doing its job, and it is
+the clearest one line explanation of the whole question.
 
 ## Complexity
 

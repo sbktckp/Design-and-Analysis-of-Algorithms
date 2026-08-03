@@ -6,25 +6,99 @@
 | 1.2 | Uppercase Convert | `1.2_uppercase_convert.c` | `data/test.txt`, or paths as arguments |
 | 1.3 | Odd Even Split | `1.3_odd_even_split.c` | numbers from the keyboard |
 
-## Run
+## Run in the terminal
 
-Day 1 numbers its programs 1.1 to 1.4 as well, so name this folder:
+Day 1 numbers its programs 1.1 to 1.4 as well, so name this folder in front of
+the number:
+
+### 1.1 Compare two files
 
 ```bash
 ./run "assignment 1/1.1"
-./run "assignment 1/1.2"
-./run "assignment 1/1.3"
 ```
 
-Or build it in place:
+Two files that match:
+
+```
+Enter name of first file: data/first.txt
+Enter name of second file: data/second.txt
+Files are identical
+```
+
+Two that differ by one word:
+
+```
+Enter name of first file: data/first.txt
+Enter name of second file: data/third.txt
+Files are not identical
+First difference at character 41: 'd' against 'c'
+```
+
+### 1.2 Convert a file to upper case
+
+```bash
+./run "assignment 1/1.2"
+```
+```
+74 characters converted from data/test.txt into data/upper.txt
+
+Contents of data/upper.txt:
+HELLO WORLD FROM THE DAA LAB.
+FILE HANDLING IN C IS MOSTLY GETC AND PUTC.
+```
+
+It also takes two paths if you want different files:
+
+```bash
+./run "assignment 1/1.2" data/first.txt data/shout.txt
+```
+
+### 1.3 Split numbers into odd and even files
+
+```bash
+./run "assignment 1/1.3"
+```
+```
+Enter up to 30 numbers, -1 to stop:
+10 7 4 25 30 13 -1
+6 numbers written to data/DATA.dat
+
+Contents of DATA file:
+  10   7   4  25  30  13
+
+Contents of ODD file:
+   7  25  13
+
+Contents of EVEN file:
+  10   4  30
+
+3 odd, 3 even, 6 in total
+```
+
+Try a negative odd number, say `-7`, and check it lands in the ODD file. That is
+the sign trap explained below, and it is worth demonstrating.
+
+### The compact versions
+
+```bash
+./run compact/1.1
+./run compact/1.2
+./run compact/1.3
+```
+
+If `./run` reports two matches, it will print the exact commands to choose from.
+
+### Without the run script
 
 ```bash
 cd "Assignment 1 - File Handling"
 make
-./bin/1.1_compare_files            # try data/first.txt and data/second.txt
-./bin/1.2_uppercase_convert        # or give it two paths
-./bin/1.3_odd_even_split           # type numbers, -1 to stop
+./bin/1.1_compare_files
+./bin/1.2_uppercase_convert
+./bin/1.3_odd_even_split
 ```
+
+Stay inside the folder, since all three use relative `data/` paths.
 
 ## Five things about files in C that all three programs rely on
 
