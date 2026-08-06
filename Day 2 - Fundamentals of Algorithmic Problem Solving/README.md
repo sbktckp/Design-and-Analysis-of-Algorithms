@@ -10,46 +10,42 @@ results to a separate disc file, as the lab sheet asks.
 
 2.2 is not in the lab manual. It jumps from 2.1 to 2.3.
 
-## Run in the terminal
+## Run in your Codespace terminal
 
-From the repo root. These are the only two programs in the repo that take
-command line arguments, and the arguments are optional.
+These are the only two programs in the repo that take command line
+arguments, and the arguments are optional.
 
 ### 2.1 Decimal to binary
 
 ```bash
+cd /workspaces/Design-and-Analysis-of-Algorithms
 ./run 2.1
 ```
-```
-Contents of the output disc file "data/outBin.dat":
-The binary equivalent of 30 is 0000000000011110
-The binary equivalent of 75 is 0000000001001011
-The binary equivalent of 2564 is 0000101000000100
-...
-```
+
+No typing needed. It reads `data/inDec.dat`, writes `data/outBin.dat`,
+and prints the result. 30 becomes `0000000000011110`.
 
 With the arguments the sheet specifies:
 
 ```bash
+cd /workspaces/Design-and-Analysis-of-Algorithms
 ./run 2.1 150 data/inDec.dat data/outBin.dat
 ```
 
 ### 2.3 GCD of pairs
 
 ```bash
+cd /workspaces/Design-and-Analysis-of-Algorithms
 ./run 2.3
 ```
-```
-Contents of the output disc file "data/outGcd.dat" (20 pairs):
-The GCD of 8 and 12 is 4
-The GCD of 20 and 45 is 5
-The GCD of 30 and 80 is 10
-...
-```
+
+No typing needed. It reads all 20 pairs from `data/inGcd.dat` and writes
+`data/outGcd.dat`. 8 and 12 give 4, 20 and 45 give 5.
 
 With arguments:
 
 ```bash
+cd /workspaces/Design-and-Analysis-of-Algorithms
 ./run 2.3 data/inGcd.dat data/outGcd.dat
 ```
 
@@ -58,6 +54,7 @@ With arguments:
 These live one folder deeper, so their paths need `../data/`:
 
 ```bash
+cd /workspaces/Design-and-Analysis-of-Algorithms
 ./run compact/2.1
 ./run compact/2.3
 
@@ -71,13 +68,18 @@ These live one folder deeper, so their paths need `../data/`:
 cd "Day 2 - Fundamentals of Algorithmic Problem Solving"
 gcc 2.1_decimal_to_binary.c -o lab2q1
 ./lab2q1 150 data/inDec.dat data/outBin.dat
+```
 
+```bash
+cd "Day 2 - Fundamentals of Algorithmic Problem Solving"
 gcc 2.3_gcd_pairs.c -o lab2q2
 ./lab2q2 data/inGcd.dat data/outGcd.dat
 ```
 
-If you get `No such file or directory`, the program was started from the wrong
-folder. `./run` takes care of that for you.
+### If it says No such file or directory
+
+The program was started from the wrong folder. `./run` handles that for
+you, or `cd` into the day folder first.
 
 ## How each program works
 

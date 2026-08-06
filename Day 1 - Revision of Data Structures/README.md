@@ -7,82 +7,85 @@
 | 1.3 | Duplicate Element Count | `1.3_duplicate_elements.c` | `data/1.3_input.txt` |
 | 1.4 | Rotate Right Array | `1.4_rotate_right.c` | keyboard |
 
-## Run in the terminal
+## Run in your Codespace terminal
 
-From the repo root. Each block shows the command, then what to type when it
-asks, then what comes back.
+One block per question. Copy, paste, done.
 
-### 1.1 Second smallest and largest
+### 1.1 Second smallest and second largest
 
 ```bash
+cd /workspaces/Design-and-Analysis-of-Algorithms
 ./run 1.1
 ```
-```
-Size of the array (n): 10
 
-Second smallest: 5
-Second largest : 66
-```
+Type `10` when it asks for the size. It reads the numbers from
+`data/1.1_input.txt` and answers 5 and 66.
 
-### 1.2 Prefix sum
+### 1.2 Prefix sum array
 
 ```bash
+cd /workspaces/Design-and-Analysis-of-Algorithms
 ./run 1.2
 ```
-```
-Size of the array (N): 5
-Enter 5 elements: 3 4 5 1 2
 
-Input Array : 3 4 5 1 2
-Output Array: 3 7 12 13 15
-```
+Type `5`, then `3 4 5 1 2`. The output array is `3 7 12 13 15`, which is
+the example on the sheet.
 
-### 1.3 Duplicate elements
+### 1.3 Duplicate element count
 
 ```bash
+cd /workspaces/Design-and-Analysis-of-Algorithms
 ./run 1.3
 ```
-```
-Enter how many numbers you want to read from file: 15
 
-Total number of duplicate values = 4
-The most repeating element in the array = 10 (5 times)
-```
+Type `15`. It reads the 15 numbers from `data/1.3_input.txt` and reports
+4 duplicate values, most repeating element 10.
 
 ### 1.4 Rotate right
 
 ```bash
+cd /workspaces/Design-and-Analysis-of-Algorithms
 ./run 1.4
 ```
-```
-Size of the array (N): 9
-Enter an array A of size N (9): 11 22 33 44 55 66 77 88 99
-Number of elements to rotate (p2): 5
 
-Before ROTATE: 11 22 33 44 55 66 77 88 99
-After  ROTATE: 55 11 22 33 44 66 77 88 99
-```
+Type `9`, then `11 22 33 44 55 66 77 88 99`, then `5`. The array becomes
+`55 11 22 33 44 66 77 88 99`.
 
 ### The compact versions
 
 Same numbers with `compact/` in front, same inputs:
 
 ```bash
+cd /workspaces/Design-and-Analysis-of-Algorithms
 ./run compact/1.1
 ./run compact/1.2
 ./run compact/1.3
 ./run compact/1.4
 ```
 
-### Without the run script
+### Building this folder on its own
 
 ```bash
 cd "Day 1 - Revision of Data Structures"
 make
 ./bin/1.1_second_smallest_largest
+./bin/1.2_prefix_sum
+./bin/1.3_duplicate_elements
+./bin/1.4_rotate_right
 ```
 
-Stay inside the folder, since 1.1 and 1.3 open `data/` by a relative path.
+Stay inside the folder, since 1.1 and 1.3 open `data/` by a relative
+path.
+
+### If you get permission denied
+
+The executable bit does not survive a fresh clone. `make` at the repo
+root fixes it, or do it directly:
+
+```bash
+cd /workspaces/Design-and-Analysis-of-Algorithms
+chmod +x run
+```
 
 ## How each program works
 
