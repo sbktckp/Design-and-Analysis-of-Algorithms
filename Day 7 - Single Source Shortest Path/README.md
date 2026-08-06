@@ -4,15 +4,18 @@
 |-----|---------|------|-------|
 | 7.1 | Dijkstra Shortest Path | `7.1_dijkstra_shortest_path.c` | `data/inDiAdjMat1.dat` |
 
-## Run in the terminal
+## Run in your Codespace terminal
+
+### 7.1 Dijkstra's shortest path
 
 ```bash
+cd /workspaces/Design-and-Analysis-of-Algorithms
 ./run 7.1
 ```
-```
-Enter the Number of Vertices: 5
-Enter the Source Vertex: 1
 
+Type `5` for the vertex count, then `1` for the source. Output:
+
+```
 Source   Destination  Cost   Path
 1        1            0      -
 1        2            8      1->4->2
@@ -21,16 +24,17 @@ Source   Destination  Cost   Path
 1        5            7      1->4->5
 ```
 
-Try source 4 as well. It is a directed graph, so the answers are not symmetric,
-which is worth showing if asked whether direction matters.
+Run it again with source `4`. It is a directed graph, so the answers are
+not symmetric, which is worth showing if asked whether direction matters.
 
 ### The compact version
 
 ```bash
-./run compact/7.1     # same 5 and 1
+cd /workspaces/Design-and-Analysis-of-Algorithms
+./run compact/7.1
 ```
 
-### Without the run script
+### Building this folder on its own
 
 ```bash
 cd "Day 7 - Single Source Shortest Path"

@@ -7,63 +7,43 @@ Both programs read from the keyboard.
 | 8.1 | Matrix Chain Multiplication | `8.1_matrix_chain_multiplication.c` |
 | 8.2 | Longest Common Subsequence | `8.2_longest_common_subsequence.c` |
 
-## Run in the terminal
+## Run in your Codespace terminal
 
 ### 8.1 Matrix chain multiplication
 
 ```bash
+cd /workspaces/Design-and-Analysis-of-Algorithms
 ./run 8.1
 ```
-```
-Enter number of matrices: 4
-Enter row and col size of A1: 30 35
-Enter row and col size of A2: 35 15
-Enter row and col size of A3: 15 5
-Enter row and col size of A4: 5 10
 
-M Table:
-0 15750 7875 9375
-0 0 2625 4375
-0 0 0 750
-0 0 0 0
+Type `4`, then the four dimension pairs one line at a time: `30 35`,
+`35 15`, `15 5`, `5 10`. It prints the M table, the S table, the
+bracketing `((A1 (A2 A3)) A4)` and 9375 scalar multiplications.
 
-S Table:
-0 1 1 3
-0 0 2 3
-0 0 0 3
-0 0 0 0
-
-Optimal parenthesization: ((A1 (A2 A3)) A4)
-The optimal ordering of the given matrices requires 9375 scalar multiplications.
-```
-
-Try entering mismatched dimensions, say 30 35 then 20 15, and it refuses with a
-clear message instead of printing a meaningless number.
+Try mismatched dimensions, say `30 35` then `20 15`, and it refuses with
+a clear message instead of printing a meaningless number.
 
 ### 8.2 Longest common subsequence
 
 ```bash
+cd /workspaces/Design-and-Analysis-of-Algorithms
 ./run 8.2
 ```
-```
-Enter the first string into an array: 10010101
-Enter the second string into an array: 010110110
 
-LCS: 100110
-LCS Length: 6
-```
+Type `10010101`, then `010110110`. The answer is `100110`, length 6.
 
-It takes any strings, not only binary ones. Try `ABCBDAB` and `BDCABA` for the
-textbook example.
+It takes any strings, not only binary ones. Try `ABCBDAB` and `BDCABA`
+for the textbook example.
 
 ### The compact versions
 
 ```bash
+cd /workspaces/Design-and-Analysis-of-Algorithms
 ./run compact/8.1
 ./run compact/8.2
 ```
 
-### Without the run script
+### Building this folder on its own
 
 ```bash
 cd "Day 8 - Dynamic Programming"

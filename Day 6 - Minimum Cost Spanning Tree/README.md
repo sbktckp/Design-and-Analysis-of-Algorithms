@@ -8,69 +8,41 @@ different formats the two questions specify.
 | 6.1 | Prim MST | `6.1_prim_mst.c` | `data/inUnAdjMat.dat` cost adjacency matrix |
 | 6.2 | Kruskal MST | `6.2_kruskal_mst.c` | `data/inEdgeList.dat` edge list |
 
-## Run in the terminal
+## Run in your Codespace terminal
 
-### 6.1 Prim's MST
+### 6.1 Prim's minimum spanning tree
 
 ```bash
+cd /workspaces/Design-and-Analysis-of-Algorithms
 ./run 6.1
 ```
-```
-Enter the Number of Vertices: 9
-Enter the Starting Vertex: 1
 
-Cost adjacency matrix of the minimum spanning tree:
-  0   4   0   0   0   0   0   8   0
-  4   0   0   0   0   0   0   0   0
-  ...
+Type `9` for the vertex count, then `1` for the starting vertex. It
+prints the cost adjacency matrix of the tree, the eight selected edges,
+and a total weight of 37.
 
-Selected edges:
-  1 -- 2  cost 4
-  6 -- 3  cost 4
-  3 -- 4  cost 7
-  4 -- 5  cost 9
-  7 -- 6  cost 2
-  8 -- 7  cost 1
-  1 -- 8  cost 8
-  3 -- 9  cost 2
-
-Total Weight of the Spanning Tree: 37
-```
-
-### 6.2 Kruskal's MST
-
-No keyboard input at all, it reads everything from the file:
+### 6.2 Kruskal's minimum spanning tree
 
 ```bash
+cd /workspaces/Design-and-Analysis-of-Algorithms
 ./run 6.2
 ```
-```
-Vertices: 9   Edges: 14
 
-Edge      Cost
-7--8      1
-3--9      2
-6--7      2
-1--2      4
-3--6      4
-3--4      7
-1--8      8
-4--5      9
+No typing at all, it reads the vertex count, edge count and every edge
+from the file. Also totals 37.
 
-Total Weight of the Spanning Tree: 37
-```
-
-Run both and point at the two totals. Same 37 by completely different routes,
-and the edge lists differ where weights tie.
+Run both and point at the two totals. Same 37 by completely different
+routes, and the edge lists differ where weights tie.
 
 ### The compact versions
 
 ```bash
-./run compact/6.1     # same 9 and 1
+cd /workspaces/Design-and-Analysis-of-Algorithms
+./run compact/6.1
 ./run compact/6.2
 ```
 
-### Without the run script
+### Building this folder on its own
 
 ```bash
 cd "Day 6 - Minimum Cost Spanning Tree"
