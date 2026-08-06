@@ -9,122 +9,89 @@
 
 3.1 and 3.2 are menu driven and each option writes its own output file, so a run
 never overwrites another one. Each input file holds 300 elements, inside the 300
-to 500 range the sheet asks for: ascending is 10, 20, 30 and so on, descending
-is the reverse, random is a shuffle of the same values.
+to 500 range the sheet asks for.
 
-## Run in the terminal
+## Run in your Codespace terminal
 
 ### 3.1 Merge sort
 
 ```bash
+cd /workspaces/Design-and-Analysis-of-Algorithms
 ./run 3.1
 ```
-```
-MAIN MENU (MERGE SORT)
-1. Ascending Data
-2. Descending Data
-3. Random Data
-4. ERROR (EXIT)
-Enter option: 3
 
-...sorted output...
-Elements sorted    : 300
-Number of Comparisons: 2114
-Execution Time     : 1652483 nanoseconds
-```
-
-Then `4` to leave. Option 1 gives 1308 comparisons, option 3 gives 2114. Nearly
-the same work whatever the input order, which is the point of merge sort.
+Type `1` for ascending, `2` for descending, `3` for random, then `4` to
+exit. Option 1 gives 1308 comparisons, option 3 gives 2114. Nearly the
+same work whatever the input order, which is the point of merge sort.
 
 ### 3.2 Quick sort
 
 ```bash
+cd /workspaces/Design-and-Analysis-of-Algorithms
 ./run 3.2
 ```
 
-Option 1, already sorted data, the killer case:
+Same menu. Run option 1 and option 3 in the same session and compare:
 
 ```
 Enter option: 1
-
 Number of Comparisons: 44850
 Maximum recursion depth      : 300
 Scenario: Worst-case partitioning
-```
 
-Option 3, shuffled data:
-
-```
 Enter option: 3
-
 Number of Comparisons: 2719
 Maximum recursion depth      : 17
 Scenario: Best-case partitioning
 ```
 
-Run both and put the two numbers side by side. 44850 is exactly 300 x 299 / 2,
-which is the worst case formula, and it is the single most convincing thing you
-can show for this question.
+44850 is exactly 300 x 299 / 2, the worst case formula, and it is the
+single most convincing thing you can show for this question.
 
 ### 3.3 Minimum and maximum
 
 ```bash
+cd /workspaces/Design-and-Analysis-of-Algorithms
 ./run 3.3
 ```
-```
-Size of the array (n): 15
-Array read from file: 45 12 78 3 99 23 67 5 88 34 91 7 56 19 72
 
-Minimum element: 3
-Maximum element: 99
-
-Comparisons made           : 21
-A simple loop would need    : 28
-Theoretical 3n/2 - 2        : 20
-```
-
-The three numbers together are the answer to this question. 21 against 28 is the
-saving divide and conquer buys, and 20 is what the formula predicts.
+Type `15`. It reads `data/3.3_input.txt` and reports min 3, max 99, in 21
+comparisons where a simple loop would need 28.
 
 ### 3.4 Binary search
 
 ```bash
+cd /workspaces/Design-and-Analysis-of-Algorithms
 ./run 3.4
 ```
-```
-Enter size of array: 10
-Enter elements of the array in ascending order: 2 3 7 7 7 11 12 12 20 50
-Enter the key to be searched: 7
 
-7 found at index position 2
-Number of comparisons: 3
-```
-
-Index 2 is the FIRST of the three sevens, which is what the question asks for.
-Search for 8 and it reports not found, also in 3 comparisons. Feed it an
-unsorted array and it refuses, since binary search on unsorted data returns
-wrong answers quietly.
+Type `10`, then `2 3 7 7 7 11 12 12 20 50`, then `7`. It answers index
+position 2 in 3 comparisons, which is the example on the sheet. Index 2
+is the FIRST of the three sevens.
 
 ### The compact versions
 
 ```bash
+cd /workspaces/Design-and-Analysis-of-Algorithms
 ./run compact/3.1
 ./run compact/3.2
 ./run compact/3.3
 ./run compact/3.4
 ```
 
-### Without the run script
+### Building this folder on its own
 
 ```bash
 cd "Day 3 - Divide and Conquer Method"
 make
 ./bin/3.1_merge_sort
+./bin/3.2_quick_sort
 ./bin/3.3_min_max
+./bin/3.4_binary_search
 ```
 
-Stay inside the folder, since 3.1, 3.2 and 3.3 open `data/` by a relative path.
-3.4 reads only from the keyboard, so it works from anywhere.
+Stay inside the folder, since 3.1, 3.2 and 3.3 open `data/` by a relative
+path. 3.4 reads only from the keyboard, so it works from anywhere.
 
 ## The idea behind all four
 

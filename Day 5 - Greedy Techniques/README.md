@@ -7,58 +7,41 @@ Both programs read from the keyboard, so nothing here needs a data file.
 | 5.1 | Fractional Knapsack | `5.1_fractional_knapsack.c` |
 | 5.2 | Huffman Coding | `5.2_huffman_coding.c` |
 
-## Run in the terminal
+## Run in your Codespace terminal
 
 ### 5.1 Fractional knapsack
 
 ```bash
+cd /workspaces/Design-and-Analysis-of-Algorithms
 ./run 5.1
 ```
-```
-Enter the number of items: 3
-Enter the profit and weight of item no 1: 27 16
-Enter the profit and weight of item no 2: 14 12
-Enter the profit and weight of item no 3: 26 13
-Enter the capacity of knapsack: 18
 
-Item No   profit       Weight       Amount to be taken
-3         26.000000    13.000000    1.000000
-1         27.000000    16.000000    0.312500
-2         14.000000    12.000000    0.000000
-Maximum profit: 34.437500
-```
+Type, one line at a time: `3`, then `27 16`, then `14 12`, then `26 13`,
+then `18`. Item 3 goes in whole, 0.3125 of item 1 fills the rest, and the
+maximum profit is 34.437500.
 
 ### 5.2 Huffman coding
 
 ```bash
+cd /workspaces/Design-and-Analysis-of-Algorithms
 ./run 5.2
 ```
-```
-Enter the number of distinct alphabets: 6
-Enter the alphabets: a b c d e f
-Enter its frequencies: 45 13 12 16 9 5
 
-In-order traversal of the tree (Huffman): a c b f e d
-Character codes:
-  Ch Freq  Code
-  a  45    0
-  c  12    100
-  b  13    101
-  f  5     1100
-  e  9     1101
-  d  16    111
-```
+Type `6`, then `a b c d e f`, then `45 13 12 16 9 5`. The in-order
+traversal is `a c b f e d`, and it also prints the code words: a=0,
+c=100, b=101, f=1100, e=1101, d=111.
 
 ### The compact versions
 
 Same inputs, shorter code:
 
 ```bash
+cd /workspaces/Design-and-Analysis-of-Algorithms
 ./run compact/5.1
 ./run compact/5.2
 ```
 
-### Without the run script
+### Building this folder on its own
 
 ```bash
 cd "Day 5 - Greedy Techniques"
