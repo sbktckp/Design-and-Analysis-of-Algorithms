@@ -8,95 +8,61 @@ All three programs are self contained and need no data files.
 | 10.2 | Fibonacci Fitstring | `10.2_fibonacci_fitstring.c` |
 | 10.3 | Binary Counter Reset | `10.3_binary_counter_reset.c` |
 
-## Run in the terminal
+## Run in your Codespace terminal
 
 ### 10.1 Randomized quicksort
 
 ```bash
+cd /workspaces/Design-and-Analysis-of-Algorithms
 ./run 10.1
 ```
-```
-Enter the number of elements: 300
 
-Input was already sorted, 300 elements
-Output verified sorted    : yes
-Comparisons made          : 2514
-Maximum recursion depth   : 18
-Expected 1.39 n log2 n    : 3432
-Deterministic worst case  : 44850
-```
+Type `300`. It sorts an already sorted array, the input that kills
+ordinary quicksort, and reports around 2500 comparisons where the
+deterministic version would need 44850.
 
-Run it two or three times. The comparison count changes every run, since the
-pivots are random, but it stays in the low thousands and nowhere near 44850.
-That variation IS the demonstration, so do not be surprised by it.
-
-Compare the number against `./run 3.2` option 1, which is the same input and the
-same algorithm without the randomised pivot.
+Run it two or three times. The count changes every run since the pivots
+are random, and that variation IS the demonstration.
 
 ### 10.2 Fibonacci fitstring
 
 ```bash
+cd /workspaces/Design-and-Analysis-of-Algorithms
 ./run 10.2
 ```
 
-The self test is the quickest way to show it works:
+The self test is the quickest proof it works. Type `4`, then `2000`:
 
 ```
-Enter option: 4
-Count up to: 2000
 Self test over 0 to 2000 and back: PASSED
 ```
 
-Or step through by hand with option 1 repeatedly:
-
-```
-Enter option: 1
-value = 1      fitstring = 1      (repairs: 0)
-Enter option: 1
-value = 2      fitstring = 10     (repairs: 1)
-Enter option: 1
-value = 3      fitstring = 100    (repairs: 1)
-Enter option: 1
-value = 4      fitstring = 101    (repairs: 1)
-Enter option: 1
-value = 5      fitstring = 1000   (repairs: 2)
-```
-
-Read 101 as F4 + F2, which is 3 + 1 = 4. Option 2 decrements, option 5 exits.
+Or step through by hand with `1` repeatedly to increment, `2` to
+decrement, `5` to exit. Five increments give value 5, fitstring `1000`,
+which is F5.
 
 ### 10.3 Binary counter with reset
 
 ```bash
+cd /workspaces/Design-and-Analysis-of-Algorithms
 ./run 10.3
 ```
 
-Option 4 replays the sheet's table in one go:
-
-```
-Enter option: 4
-
-Bit pattern (low 8 bits shown)   Operation  Cost
-00000000   Initial    cost 0    total 0
-00000001   Increment  cost 1    total 1
-00000010   Increment  cost 2    total 3
-00000000   Reset      cost 3    total 6
-00000001   Increment  cost 1    total 7
-00000000   Reset      cost 2    total 9
-Total cost of 5 operations: 9, which is O(n)
-```
-
-Or drive it yourself with 1 to increment and 2 to reset. Increment several times
-first and the reset costs more, which is the pointer doing its job.
+Type `4` to replay the sheet's table in one go, five operations for 9
+units total. Or drive it yourself with `1` to increment and `2` to
+reset. Increment several times first and the reset costs more, which is
+the pointer doing its job.
 
 ### The compact versions
 
 ```bash
+cd /workspaces/Design-and-Analysis-of-Algorithms
 ./run compact/10.1
 ./run compact/10.2
 ./run compact/10.3
 ```
 
-### Without the run script
+### Building this folder on its own
 
 ```bash
 cd "Day 10 - Amortization"

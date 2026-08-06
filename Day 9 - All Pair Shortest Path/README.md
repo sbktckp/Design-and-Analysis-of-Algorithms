@@ -4,39 +4,30 @@
 |-----|---------|------|-------|
 | 9.1 | Floyd Warshall | `9.1_floyd_warshall.c` | `data/inDiAdjMat2.dat` |
 
-## Run in the terminal
+## Run in your Codespace terminal
+
+### 9.1 Floyd Warshall
 
 ```bash
+cd /workspaces/Design-and-Analysis-of-Algorithms
 ./run 9.1
 ```
-```
-Number of Vertices: 5
 
-Shortest path weight matrix:
-    0    1   -3    2   -4
-    3    0   -4    1   -1
-    7    4    0    5    3
-    2   -1   -5    0   -2
-    8    5    1    6    0
+Type `5` for the vertex count. It prints the full shortest path matrix,
+then asks for a pair. Type `2 5` and it answers `2-->4-->1-->5` at cost
+-1.
 
-Enter the source and destination vertex: 2 5
-Path: 2-->4-->1-->5
-Cost: -1
-```
-
-The pair is asked for after the matrix is printed, so type `5`, look at the
-matrix, then type `2 5` on one line.
-
-Try `3 5` as well. The direct route does not exist, but the algorithm finds one
-through other vertices, which is a good thing to demonstrate.
+Try `3 5` as well. There is no direct edge, but the algorithm finds a
+route through other vertices, which is a good thing to demonstrate.
 
 ### The compact version
 
 ```bash
-./run compact/9.1     # same 5, then 2 5
+cd /workspaces/Design-and-Analysis-of-Algorithms
+./run compact/9.1
 ```
 
-### Without the run script
+### Building this folder on its own
 
 ```bash
 cd "Day 9 - All Pair Shortest Path"
