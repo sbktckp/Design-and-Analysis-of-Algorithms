@@ -6,11 +6,13 @@
 #   ./run 6.1                the full version of Prim's MST
 #   ./run compact/6.1        the short lab record version of the same thing
 #   ./run 2.1 150 in.dat out.dat      extra words are passed to the program
-#   ./run "day 1/1.1"        when a number lives in two folders, name one
+#   ./run "assignment 1/1.1"  the assignment copy of a number a day also uses
 #
-# A bare number always picks the full version. Put compact before the slash to
-# get the short one. The script changes into the program's own folder first,
-# because the programs open their input files by relative path.
+# A bare number always picks the full version, and the day folder when an
+# assignment happens to reuse the same number. Put compact before the slash to
+# get the short one, or the folder name to reach an assignment. The script
+# changes into the program's own folder first, because the programs open their
+# input files by relative path.
 #
 # If the executable bit did not survive the clone, call it as: bash run 6.1
 
@@ -46,6 +48,8 @@ if [ -n "$hint" ]; then
 	matches=$(printf '%s\n' "$matches" | grep -i -- "$hint" || true)
 else
 	matches=$(printf '%s\n' "$matches" | grep -v '/compact/' || true)
+	days=$(printf '%s\n' "$matches" | grep -i '^\./day ' || true)
+	[ -n "$days" ] && matches=$days
 fi
 count=$(printf '%s\n' "$matches" | grep -c . || true)
 
