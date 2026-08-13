@@ -6,8 +6,8 @@
 | 1.2 | Uppercase Convert | `1.2_uppercase_convert.c` | `data/test.txt`, or paths as arguments |
 | 1.3 | Odd Even Split | `1.3_odd_even_split.c` | numbers from the keyboard |
 
-Day 1 numbers its programs 1.1 to 1.4 as well, so name this folder in
-front of the number when using `./run`.
+Day 1 numbers its programs 1.1 to 1.4 as well, and a bare `./run 1.1` goes to
+Day 1. Name this folder in front of the number to reach the assignment.
 
 ## Run in your Codespace terminal
 
@@ -55,15 +55,17 @@ That is the sign trap explained below, and it is worth demonstrating.
 
 ### The compact versions
 
+Same commands with `compact` after the folder name:
+
 ```bash
 cd /workspaces/Design-and-Analysis-of-Algorithms
-./run compact/1.1
-./run compact/1.2
-./run compact/1.3
+./run "assignment 1/compact/1.1"
+./run "assignment 1/compact/1.2"
+./run "assignment 1/compact/1.3"
 ```
 
-If `./run` reports two matches, it prints the exact commands to choose
-from.
+A plain `./run compact/1.1` gives you the Day 1 compact program instead,
+for the same reason a plain `./run 1.1` does.
 
 ### Building this folder on its own
 

@@ -6,13 +6,15 @@
 #   ./run 6.1                the full version of Prim's MST
 #   ./run compact/6.1        the short lab record version of the same thing
 #   ./run 2.1 150 in.dat out.dat      extra words are passed to the program
-#   ./run "assignment 1/1.1"  the assignment copy of a number a day also uses
+#   ./run "assignment 1/1.1"          the assignment copy of a shared number
+#   ./run "assignment 1/compact/1.1"  and its compact version
 #
-# A bare number always picks the full version, and the day folder when an
-# assignment happens to reuse the same number. Put compact before the slash to
-# get the short one, or the folder name to reach an assignment. The script
-# changes into the program's own folder first, because the programs open their
-# input files by relative path.
+# Anything before the last slash narrows the folder, one word per slash, and
+# matching is case insensitive on any part of the path. Without a compact
+# segment only full versions are considered, and when a number lives in both a
+# day and an assignment the day wins, so a bare number never asks a question.
+# The script changes into the program's own folder first, because the programs
+# open their input files by relative path.
 #
 # If the executable bit did not survive the clone, call it as: bash run 6.1
 
@@ -35,22 +37,37 @@ fi
 query="$1"
 shift
 
-if [ "$query" != "${query#*/}" ]; then
-	hint=${query%%/*}
-	number=${query##*/}
+number=${query##*/}
+if [ "$query" != "$number" ]; then
+	hint=${query%/*}
 else
 	hint=""
-	number=$query
 fi
 
 matches=$(find . -mindepth 2 -maxdepth 3 -name "${number}_*.c" | sort)
+
+want_compact=0
 if [ -n "$hint" ]; then
-	matches=$(printf '%s\n' "$matches" | grep -i -- "$hint" || true)
-else
-	matches=$(printf '%s\n' "$matches" | grep -v '/compact/' || true)
-	days=$(printf '%s\n' "$matches" | grep -i '^\./day ' || true)
-	[ -n "$days" ] && matches=$days
+	old_ifs=$IFS
+	IFS='/'
+	for part in $hint; do
+		if [ "$(printf '%s' "$part" | tr 'A-Z' 'a-z')" = "compact" ]; then
+			want_compact=1
+		fi
+		matches=$(printf '%s\n' "$matches" | grep -iF -- "$part" || true)
+	done
+	IFS=$old_ifs
 fi
+
+if [ "$want_compact" -eq 0 ]; then
+	matches=$(printf '%s\n' "$matches" | grep -v '/compact/' || true)
+fi
+
+days=$(printf '%s\n' "$matches" | grep -i '^\./day ' || true)
+if [ -n "$days" ]; then
+	matches=$days
+fi
+
 count=$(printf '%s\n' "$matches" | grep -c . || true)
 
 if [ "$count" -eq 0 ]; then
@@ -65,7 +82,7 @@ if [ "$count" -gt 1 ]; then
 	printf '%s\n' "$matches" | while IFS= read -r p; do
 		folder=$(dirname "${p#./}")
 		case "$folder" in
-		*/compact) tag="compact" ;;
+		*/compact) tag="$(printf '%s' "${folder%/compact}" | cut -d' ' -f1,2 | tr 'A-Z' 'a-z')/compact" ;;
 		*) tag=$(printf '%s' "$folder" | cut -d' ' -f1,2 | tr 'A-Z' 'a-z') ;;
 		esac
 		printf '  ./run "%s/%s"\n' "$tag" "$number" >&2
