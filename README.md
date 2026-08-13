@@ -20,9 +20,10 @@ Then run a program whichever way suits you.
 **Or use the terminal:**
 
 ```bash
-./run              # list everything
-./run 6.1          # Prim's minimum spanning tree, full version
-./run compact/6.1  # the same thing, short enough to hand write
+./run                     # list everything
+./run 6.1                 # Prim's minimum spanning tree, full version
+./run compact/6.1         # the same thing, short enough to hand write
+./run "assignment 1/1.1"  # an assignment number that a day folder also uses
 ```
 
 Words after the number go to the program:
@@ -66,6 +67,8 @@ Day 2 has no question 2.2. The lab sheet skips from 2.1 straight to 2.3.
 |-----|-------|-----------------|
 | [1](Assignment%201%20-%20File%20Handling) | File Handling | why EOF needs an `int`, why you never open one file for read and write at once |
 
+Assignments reuse the day numbering, so Assignment 1 also has a 1.1. A bare `./run 1.1` takes the day one; put the folder name in front to reach the assignment.
+
 ## WHAT IS IN A DAY FOLDER
 
 ```
@@ -98,7 +101,7 @@ Binaries land in that folder's `bin/`, which is gitignored and hidden from the E
 
 **`./run` says permission denied.** The executable bit did not survive the clone. Run `chmod +x run` once, or call it as `bash run 6.1`.
 
-**`./run 1.1` says the number exists in two places.** Day 1 and Assignment 1 both number their programs 1.1. It prints the two exact commands to choose from.
+**`./run 1.1` gave you the wrong 1.1.** Day 1 and Assignment 1 both number their programs 1.1, and a bare number resolves to the day. For the assignment copy, name the folder: `./run "assignment 1/1.1"`.
 
 **Your copy behaves differently from what a README describes.** Pull first, with `git stash` before it if you have local edits.
 
