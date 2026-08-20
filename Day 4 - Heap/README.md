@@ -3,6 +3,8 @@
 | No. | Program | File | Input |
 |-----|---------|------|-------|
 | 4.1 | Person Heap | `4.1_person_heap.c` | `data/inPerson.dat` |
+| 4.2 | Fractional Knapsack | `4.2_knapsack.c` | `data/inKnapsack.dat` |
+| 4.3 | Huffman Coding | `4.3_huffman.c` | `data/inHuffman.dat` |
 
 ## Run in your Codespace terminal
 
@@ -40,18 +42,81 @@ cd /workspaces/Design-and-Analysis-of-Algorithms
 ./run compact/4.1
 ```
 
+### 4.2 Fractional knapsack
+
+```bash
+cd /workspaces/Design-and-Analysis-of-Algorithms
+./run 4.2
+```
+
+The menu:
+
+```
+1. Read Data
+2. Fill Knapsack (enter capacity)
+3. Exit
+```
+
+Option 1 loads the items. Option 2 asks for a capacity, sorts the items
+by profit/weight ratio, and prints exactly what got taken and the
+resulting maximum profit. With the supplied data (weights 10, 20, 30
+and profits 60, 100, 120) and capacity 50, it takes items 0 and 1 whole
+plus 2/3 of item 2, for a maximum profit of 240.00.
+
+The compact version, no menu, asks only for the capacity and prints the
+final profit:
+
+```bash
+cd /workspaces/Design-and-Analysis-of-Algorithms
+./run compact/4.2
+```
+
+### 4.3 Huffman coding
+
+```bash
+cd /workspaces/Design-and-Analysis-of-Algorithms
+./run 4.3
+```
+
+The menu:
+
+```
+1. Read Data
+2. Build Huffman Tree
+3. Display Codes
+4. Encode a Message
+5. Exit
+```
+
+Option 1 loads character frequencies, option 2 builds the tree, option 3
+lists each character's code, and option 4 encodes a message you type
+using those codes. With the classic sample data (`a`=5, `b`=9, `c`=12,
+`d`=13, `e`=16, `f`=45) the codes come out to `f`=0, `c`=100, `d`=101,
+`a`=1100, `b`=1101, `e`=111, matching the standard textbook tree.
+
+The compact version, no menu, builds the tree and prints the codes:
+
+```bash
+cd /workspaces/Design-and-Analysis-of-Algorithms
+./run compact/4.3
+```
+
 ### Building this folder on its own
 
 ```bash
 cd "Day 4 - Heap"
 make
 ./bin/4.1_person_heap
+./bin/4.2_knapsack
+./bin/4.3_huffman
 ```
 
-Stay inside the folder, since the program opens `data/inPerson.dat` by a
+Stay inside the folder, since the programs open their `data/` files by a
 relative path.
 
 ## Input format
+
+### 4.1 Person heap
 
 One record per line, comma separated so that names may contain spaces:
 
@@ -68,6 +133,29 @@ not a comma, which keeps the name whole.
 Weight is in pounds, as on the sheet, and option 4 converts to kilograms. The
 youngest in the supplied file is Norma Webster at 23, weighing 145 lb, so option
 4 prints 65.77 kg, matching the sheet exactly.
+
+### 4.2 Fractional knapsack
+
+One record per line: `weight,profit`
+
+```
+10,60
+20,100
+30,120
+```
+
+### 4.3 Huffman coding
+
+One record per line: `character,frequency`
+
+```
+a,5
+b,9
+c,12
+d,13
+e,16
+f,45
+```
 
 ## What a heap actually is
 
@@ -97,7 +185,7 @@ element of all is sitting at index 0.
 
 That is the deal a heap offers. Give up full sorting, get the minimum for free.
 
-## How the program works
+## How 4.1 works
 
 ### The two repair operations
 
@@ -171,11 +259,103 @@ Names are copied with a hand written `dup_string` instead of `strdup`. `strdup`
 is POSIX, not ISO C17, and would be flagged under `-Wpedantic`. Four lines of
 `malloc` and `memcpy` keep the build clean.
 
-## Complexity
+## How 4.2 works
 
-| Operation | Cost | Why |
-|-----------|------|-----|
-| Build heap | O(n) | bottom up, most elements are leaves |
-| Insert | O(log n) | one sift up along a single path |
-| Delete oldest | O(n) to find, O(log n) to repair | a min-heap cannot locate its maximum |
-| Weight of youngest | O(1) | it is the root |
+### The greedy rule
+
+Every item has a profit/weight ratio. Sort items by that ratio, descending, and
+fill the sack from the top of that order: take whole items while they fit, and
+when one doesn't fit, take the fraction that does and stop.
+
+```c
+qsort(items, (size_t)count, sizeof *items, by_ratio_desc);
+for (i = 0; i < count && remaining > 0.0; i++) {
+    if (items[i].weight <= remaining) { /* take it whole */ }
+    else { /* take remaining / items[i].weight of it, and stop */ }
+}
+```
+
+### Why this greedy choice is actually optimal here
+
+Fractional knapsack is one of the few knapsack variants where greedy provably
+gives the optimal answer, and the reason is the ability to take a fraction. Any
+solution that leaves unused capacity while a higher-ratio item still has
+untaken weight can be improved by shifting weight from a lower-ratio item to
+that higher-ratio item, strictly increasing profit for the same total weight.
+So an optimal solution must exhaust capacity on the highest available ratios
+first, which is exactly what the sort-and-fill does.
+
+This breaks the moment items must be taken whole (0/1 knapsack), because then
+a locally best ratio can force a bad combination overall, and the problem needs
+dynamic programming instead. The fractional version is the base case where
+greedy has a real optimality proof, not just a heuristic.
+
+### Complexity
+
+`qsort` costs O(n log n), the single pass to fill the sack costs O(n), so the
+whole thing is O(n log n), dominated by the sort.
+
+## How 4.3 works
+
+### Why a min-heap
+
+Building the tree means repeatedly asking "which two nodes have the smallest
+combined frequency to merge next", and a min-heap answers "what's smallest"
+in O(1) and lets you pop it in O(log n). That's the same heap machinery as
+4.1, just keyed on `freq` instead of `age`.
+
+```c
+while (heap_size > 1) {
+    struct node *left = heap_pop();
+    struct node *right = heap_pop();
+    struct node *parent = new_node('\0', left->freq + right->freq, left, right);
+    heap_push(parent);
+}
+root = heap_pop();
+```
+
+Each iteration removes two nodes and adds one back, so after n-1 merges a
+single node remains: the root of the Huffman tree.
+
+### Why the merges give the optimal code
+
+Merging the two least-frequent nodes first means the least-frequent characters
+end up deepest in the tree, farthest from the root, so they get the longest
+codes, and the most frequent characters end up shallow with the shortest
+codes. That's exactly the tradeoff an optimal prefix code wants: spend more
+bits on rare symbols, fewer bits on common ones, and the earliest, greedy
+merges guarantee no better tree exists for these frequencies.
+
+### Getting a code out of the tree
+
+A code for a character is just the path from the root to its leaf, left
+branches as 0, right branches as 1:
+
+```c
+path[depth] = '0'; recurse into left;
+path[depth] = '1'; recurse into right;
+```
+
+No two characters can share a full path to another character's leaf, because
+every character sits at a leaf and no leaf is an ancestor of another. That's
+what makes Huffman codes prefix-free: no code is a prefix of another, so a
+decoder reading bit by bit always knows the moment a code is complete.
+
+### Complexity
+
+Building the heap from n leaves and doing n-1 pop/push pairs costs
+O(n log n). Reading a code by walking root to leaf costs O(depth), bounded
+by O(n) in the worst (very skewed) case, O(log n) for a balanced tree.
+
+## Complexity summary
+
+| Program | Operation | Cost | Why |
+|---------|-----------|------|-----|
+| 4.1 | Build heap | O(n) | bottom up, most elements are leaves |
+| 4.1 | Insert | O(log n) | one sift up along a single path |
+| 4.1 | Delete oldest | O(n) to find, O(log n) to repair | a min-heap cannot locate its maximum |
+| 4.1 | Weight of youngest | O(1) | it is the root |
+| 4.2 | Sort by ratio | O(n log n) | `qsort` |
+| 4.2 | Fill knapsack | O(n) | one pass over the sorted items |
+| 4.3 | Build tree | O(n log n) | n-1 pop/push pairs on a min-heap |
+| 4.3 | Read a code | O(depth) | walk root to leaf |
