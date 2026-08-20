@@ -123,6 +123,33 @@ static void print_codes(const struct node *p, char *code, int depth)
     print_codes(p->right, code, depth + 1);
 }
 
+/*
+ * Draws the tree rotated 90 degrees: root at the left margin, leaves at the
+ * right. The right subtree prints above the node and the left subtree below,
+ * so reading top to bottom matches the usual picture turned on its side.
+ *
+ * `pad` is the indentation inherited from the ancestors, `branch` is this
+ * node's own connector, and `bar` says whether a vertical guide is still
+ * needed in the column this node's children occupy, which is the case only
+ * while a sibling is still waiting to be drawn below.
+ */
+static void print_tree(const struct node *p, const char *pad,
+                       const char *branch, int bar)
+{
+    char child_pad[256];
+
+    if (p == NULL)
+        return;
+
+    snprintf(child_pad, sizeof child_pad, "%s%s", pad, bar ? "|   " : "    ");
+
+    print_tree(p->right, child_pad, "+-- ", p->left != NULL);
+
+    printf("%s%s%c (%d)\n", pad, branch, p->symbol.alphabet, p->symbol.frequency);
+
+    print_tree(p->left, child_pad, "\\-- ", 0);
+}
+
 static void free_tree(struct node *p)
 {
     if (p == NULL)
@@ -201,6 +228,9 @@ int main(void)
 
     printf("Character codes:\n  Ch Freq  Code\n");
     print_codes(root, code, 0);
+
+    printf("Huffman tree:\n");
+    print_tree(root, "", "", 0);
 
     free_tree(root);
     free(q.item);
