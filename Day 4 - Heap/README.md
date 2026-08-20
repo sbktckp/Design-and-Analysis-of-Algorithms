@@ -15,16 +15,6 @@ cd /workspaces/Design-and-Analysis-of-Algorithms
 
 The menu:
 
-```
-1. Read Data
-2. Create a Min-heap based on the age
-3. Create a Max-heap based on the weight
-4. Display weight of the youngest person
-5. Insert a new person into the Min-heap
-6. Delete the oldest person
-7. Exit
-```
-
 Option 1 must come first, since everything else works on the array it
 loads. A session that answers the question the sheet asks is `1`, then
 `2`, then `4`, then `7`. It reports Norma Webster, age 23, weighing
@@ -54,40 +44,6 @@ relative path.
 ## Input format
 
 One record per line, comma separated so that names may contain spaces:
-
-```
-id,name,age,height,weight
-0,Adarsh Hota,39,77,231
-```
-
-Commas rather than spaces matter here. `scanf("%s")` stops at the first space,
-so "Adarsh Hota" would be read as "Adarsh" and everything after it would land in
-the wrong field. The format `%29[^,]` means read up to 29 characters that are
-not a comma, which keeps the name whole.
-
-Weight is in pounds, as on the sheet, and option 4 converts to kilograms. The
-youngest in the supplied file is Norma Webster at 23, weighing 145 lb, so option
-4 prints 65.77 kg, matching the sheet exactly.
-
-## What a heap actually is
-
-A heap is an ordinary array that you agree to read as a tree. No pointers, no
-nodes, just an indexing rule:
-
-```
-children of index i   ->  2i+1 and 2i+2
-parent of index i     ->  (i-1)/2
-```
-
-So the array `23 24 38 47 56 39 63` is this tree:
-
-```
-            23
-          /    \
-        24      38
-       /  \    /  \
-     47   56  39   63
-```
 
 The one rule a min-heap keeps is that every parent is smaller than its children.
 Notice what it does NOT promise: siblings are in no particular order, and the
