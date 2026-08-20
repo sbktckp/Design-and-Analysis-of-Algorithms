@@ -140,6 +140,45 @@ static void print_codes(const struct node *n, char *path, int depth)
     print_codes(n->right, path, depth + 1);
 }
 
+/*
+ * Prints the tree rotated 90 degrees: root on the left, leaves on the
+ * right. Right children are printed first (above), left children after
+ * (below), which is the standard layout for reading a binary tree
+ * sideways in a terminal.
+ *
+ * `prefix` is the run of guide bars/spaces inherited from ancestors.
+ * `branch` is this node's own connector glyph ("+-- ", "\-- ", or ""
+ * for the root). `has_sibling_below` says whether a left sibling still
+ * needs a "|" to hang off, which is what a right child must pass down
+ * to its own children's prefix.
+ */
+static void print_tree(const struct node *n, const char *prefix,
+                        const char *branch, int has_sibling_below)
+{
+    char child_prefix[256];
+
+    if (n == NULL)
+        return;
+
+    if (n->right != NULL) {
+        snprintf(child_prefix, sizeof child_prefix, "%s%s", prefix,
+                 has_sibling_below ? "|   " : "    ");
+        print_tree(n->right, child_prefix, "+-- ", n->left != NULL);
+    }
+
+    printf("%s%s", prefix, branch);
+    if (n->left == NULL && n->right == NULL)
+        printf("'%c' (%d)\n", n->ch, n->freq);
+    else
+        printf("(%d)\n", n->freq);
+
+    if (n->left != NULL) {
+        snprintf(child_prefix, sizeof child_prefix, "%s%s", prefix,
+                 has_sibling_below ? "|   " : "    ");
+        print_tree(n->left, child_prefix, "\\-- ", 0);
+    }
+}
+
 static void read_data(const char *path)
 {
     FILE *fp = fopen(path, "r");
@@ -198,6 +237,16 @@ static void show_codes(void)
     }
     printf("Huffman codes:\n");
     print_codes(root, path, 0);
+}
+
+static void show_tree(void)
+{
+    if (root == NULL) {
+        printf("No tree. Build it first (option 2).\n");
+        return;
+    }
+    printf("Huffman tree:\n");
+    print_tree(root, "", "", 0);
 }
 
 /* Returns 1 and fills path/len if target is found among n's leaves. */
@@ -259,7 +308,8 @@ int main(void)
                "2. Build Huffman Tree\n"
                "3. Display Codes\n"
                "4. Encode a Message\n"
-               "5. Exit\n"
+               "5. Display Tree\n"
+               "6. Exit\n"
                "Enter option: ");
         if (scanf("%d", &option) != 1)
             break;
@@ -278,6 +328,9 @@ int main(void)
             encode_message();
             break;
         case 5:
+            show_tree();
+            break;
+        case 6:
             if (root != NULL)
                 free_tree(root);
             reset();
