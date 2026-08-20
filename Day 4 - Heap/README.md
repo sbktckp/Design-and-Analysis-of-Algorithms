@@ -85,14 +85,36 @@ The menu:
 2. Build Huffman Tree
 3. Display Codes
 4. Encode a Message
-5. Exit
+5. Display Tree
+6. Exit
 ```
 
 Option 1 loads character frequencies, option 2 builds the tree, option 3
-lists each character's code, and option 4 encodes a message you type
-using those codes. With the classic sample data (`a`=5, `b`=9, `c`=12,
-`d`=13, `e`=16, `f`=45) the codes come out to `f`=0, `c`=100, `d`=101,
-`a`=1100, `b`=1101, `e`=111, matching the standard textbook tree.
+lists each character's code, option 4 encodes a message you type using
+those codes, and option 5 prints the tree itself, sideways in the
+terminal. With the classic sample data (`a`=5, `b`=9, `c`=12, `d`=13,
+`e`=16, `f`=45) the codes come out to `f`=0, `c`=100, `d`=101, `a`=1100,
+`b`=1101, `e`=111, matching the standard textbook tree, and option 5
+draws that same tree as:
+
+```
+    |   |   +-- 'e' (16)
+    |   +-- (30)
+    |   |       +-- 'b' (9)
+    |   |   \-- (14)
+    |   |       \-- 'a' (5)
+    +-- (55)
+    |       +-- 'd' (13)
+    |   \-- (25)
+    |       \-- 'c' (12)
+(100)
+    \-- 'f' (45)
+```
+
+The root is on the left, leaves on the right. Right children print above,
+left children print below, and tracing any leaf back to the root and
+reading right-branches as 1 and left-branches as 0 reproduces its code
+from option 3.
 
 The compact version, no menu, builds the tree and prints the codes:
 
@@ -341,11 +363,34 @@ every character sits at a leaf and no leaf is an ancestor of another. That's
 what makes Huffman codes prefix-free: no code is a prefix of another, so a
 decoder reading bit by bit always knows the moment a code is complete.
 
+### Drawing the tree sideways
+
+Option 5 walks the same tree that produces the codes, but instead of
+concatenating 0s and 1s it prints each node with connectors, right
+children first (above) and left children after (below):
+
+```c
+if (n->right != NULL)
+    print_tree(n->right, child_prefix, "+-- ", n->left != NULL);
+printf("%s%s", prefix, branch);
+...
+if (n->left != NULL)
+    print_tree(n->left, child_prefix, "\\-- ", 0);
+```
+
+`prefix` accumulates the guide bars/spaces inherited from ancestors, and
+`has_sibling_below` tracks whether a node still has a left sibling
+underneath it that needs a `|` to hang off. This is the same rotated,
+root-on-the-left layout most terminal tree viewers use, and the leaf
+reached by any path in this printout is the leaf reached by the
+matching sequence of 0s and 1s in the codes.
+
 ### Complexity
 
 Building the heap from n leaves and doing n-1 pop/push pairs costs
 O(n log n). Reading a code by walking root to leaf costs O(depth), bounded
 by O(n) in the worst (very skewed) case, O(log n) for a balanced tree.
+Printing the whole tree visits every node once, O(n).
 
 ## Complexity summary
 
@@ -359,3 +404,4 @@ by O(n) in the worst (very skewed) case, O(log n) for a balanced tree.
 | 4.2 | Fill knapsack | O(n) | one pass over the sorted items |
 | 4.3 | Build tree | O(n log n) | n-1 pop/push pairs on a min-heap |
 | 4.3 | Read a code | O(depth) | walk root to leaf |
+| 4.3 | Display tree | O(n) | visits every node once |
